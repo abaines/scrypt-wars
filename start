@@ -1,0 +1,8 @@
+#!/bin/bash
+# My first script
+
+echo "Hello World!"
+
+~/Documents/node-v8.11.1-linux-x64/bin/node ~/Documents/clone/hello.js 
+
+echo "end of start"
