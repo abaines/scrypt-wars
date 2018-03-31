@@ -1,1 +1,1 @@
-# clone
+# Scrypt Wars!
