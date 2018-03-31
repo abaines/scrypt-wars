@@ -42,6 +42,7 @@ $.getJSON( "map1/terrain", function( data ) {
   				$( "#map" ).append( '<img src="img/water.png" style="width:64px;height:64px;"/>' );
   			}
   			c++;
+			$( "#map" ).append( '<br>' );
   		});
   		r++;
 	});
