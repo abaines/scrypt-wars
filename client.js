@@ -4,25 +4,29 @@ console.log("hello!");
 
 const tileSize = 64;
 
-$.getJSON( "map1/units", function( data ) {
-	console.log(data);
+function mapUpdate() {
+	$.getJSON( "map1/units", function( data ) {
+		console.log(data);
 
-	const xoffset = 8;
-	const yoffset = 164;
+		const xoffset = 8;
+		const yoffset = 164;
 
-	var unitId = 0;
-	data.forEach(function(unit) {
-		var x = xoffset + tileSize*unit.location[0];
-		var y = yoffset + tileSize*unit.location[1];
-		
-		console.log(unit.img, x, y, unit.location);
+		var unitId = 0;
+		data.forEach(function(unit) {
+			var x = xoffset + tileSize*unit.location[0];
+			var y = yoffset + tileSize*unit.location[1];
+			
+			console.log(unit.img, x, y, unit.location);
 
-		$( "#map" ).append( '<img id="unit'+unitId+'" src="'+unit.img+'" style="position:absolute;width:64px;height:64px;"/>' );
-		$( "#unit"+unitId ).css("left",x).css("top",y);
-		
-		unitId++;
+			$( "#map" ).append( '<img id="unit'+unitId+'" src="'+unit.img+'" style="position:absolute;width:64px;height:64px;"/>' );
+			$( "#unit"+unitId ).css("left",x).css("top",y);
+			
+			unitId++;
+		});
 	});
-});
+}
+
+mapUpdate();
 
 $.getJSON( "map1/terrain", function( data ) {
 	console.log(data);
