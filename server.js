@@ -39,6 +39,8 @@ http.createServer(function (req, res) {
 }).listen(8080);
 */
 
+var map1hash = 1;
+
 var map1units;
 
 fs.readFile('map1/units.js', function(err, data) {
@@ -60,6 +62,7 @@ fs.readFile('map1/terrain.js', function(err, data) {
 
 function moveunit(query)
 {
+	map1hash++;
 	console.log(query);
 	console.log(map1units);
 	
@@ -75,7 +78,10 @@ http.createServer(function (req, res) {
 
 	var qpn = q.pathname;
 
-	console.log(q.pathname);
+	if (qpn!="/map1/hash")
+	{
+		console.log(q.pathname);
+	}
 
 	var makeSimpleFS = function(path,contentType)
 	{
@@ -122,6 +128,12 @@ http.createServer(function (req, res) {
 			
 		case "/map1/moveunit":
 			moveunit(q.query);
+			break;
+			
+		case "/map1/hash":
+			res.writeHead(200, {'Content-Type': 'application/json'});
+			res.write(JSON.stringify(map1hash));
+			res.end();
 			break;
 
 		default:
