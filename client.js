@@ -49,7 +49,7 @@ $.getJSON( "map1/terrain", function( data ) {
 
 function moveUnit(unitId,x,y)
 {
-	
+	$.ajax("map1/moveunit?id=0&x="+x+"&y="+y+"");
 }
 
 

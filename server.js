@@ -58,6 +58,17 @@ fs.readFile('map1/terrain.js', function(err, data) {
 });
 
 
+function moveunit(query)
+{
+	console.log(query);
+	console.log(map1units);
+	
+	var id = parseInt(query.id);
+	
+	map1units[id].location[0] = parseInt(query.x);
+	map1units[id].location[1] = parseInt(query.y);
+}
+
 
 http.createServer(function (req, res) {
 	var q = url.parse(req.url, true);
@@ -80,7 +91,7 @@ http.createServer(function (req, res) {
 			makeSimpleFS('index.html','text/html');
 			break;
 			
-		case "/main.js":
+		case "/client.js":
 		case "/jquery.js":
 			makeSimpleFS(qpn.substr(1),'text/html');
 			break;
@@ -107,6 +118,10 @@ http.createServer(function (req, res) {
 			res.writeHead(200, {'Content-Type': 'application/json'});
 			res.write(JSON.stringify(map1units));
 			res.end();
+			break;
+			
+		case "/map1/moveunit":
+			moveunit(q.query);
 			break;
 
 		default:

@@ -1,8 +1,8 @@
 #!/bin/bash
 # My first script
 
-echo "Hello World!"
+echo "Starting Server"
 
-~/Documents/node-v8.11.1-linux-x64/bin/node ~/Documents/clone/hello.js 
+~/Documents/node-v8.11.1-linux-x64/bin/node ~/Documents/clone/server.js 
 
-echo "end of start"
+echo "End of Server"
