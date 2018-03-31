@@ -36,7 +36,7 @@ function mapUpdate() {
 		defer.resolve();
 	});
 	
-	return defer.promise();;
+	return defer.promise();
 }
 
 mapUpdate();
@@ -77,12 +77,17 @@ function checkHash()
 		if (data == lastHash)
 		{
 			setTimeout(checkHash, 100);
+			console.log('checkHash',data);
 		}
 		else
 		{
-			mapUpdate().then(function(){ setTimeout(checkHash, 100); } );
-			console.log('checkHash',data,lastHash);
-			lastHash = data;
+			mapUpdate().then(function()
+			{
+				lastHash = data;
+				console.log('checkHash',data,lastHash,'update complete');
+				setTimeout(checkHash, 100);
+			});
+			console.log('checkHash',data,lastHash,'starting update');
 		}
 		
 	});
