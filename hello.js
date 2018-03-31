@@ -87,6 +87,8 @@ http.createServer(function (req, res) {
 			
 		case "/img/blueTank.png":
 		case "/img/blueSoldier.png":
+		case "/img/water.png":
+		case "/img/plains.png":
 			makeSimpleFS(qpn.substr(1),'image');
 			break;
 
