@@ -62,8 +62,6 @@ fs.readFile('map1/terrain.js', function(err, data) {
 
 function moveunit(query)
 {
-	map1hash++;
-	console.log('map1hash',map1hash);
 	console.log(query);
 	console.log(map1units);
 	
@@ -71,10 +69,12 @@ function moveunit(query)
 	
 	map1units[id].location[0] = parseInt(query.x);
 	map1units[id].location[1] = parseInt(query.y);
+	
+	map1hash++;
+	console.log('map1hash',map1hash);
 }
 
-
-http.createServer(function (req, res) {
+function dothething(req, res) {
 	
 	var q = url.parse(req.url, true);
 
@@ -152,7 +152,9 @@ http.createServer(function (req, res) {
 		console.timeEnd("createServer");
 	}
 	
-}).listen(8080);
+}
+
+http.createServer(dothething).listen(8080);
 
 console.log("end of hello.js");
 
