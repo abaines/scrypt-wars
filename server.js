@@ -65,10 +65,18 @@ function moveunit(query)
 	console.log(query);
 	console.log(map1units);
 	
-	var id = parseInt(query.id);
-	
-	map1units[id].location[0] = parseInt(query.x);
-	map1units[id].location[1] = parseInt(query.y);
+	try
+	{
+		var id = parseInt(query.id);
+
+		var location = [parseInt(query.x),parseInt(query.y)];
+
+		map1units[id].location = location;
+	}
+	catch(err)
+	{
+		console.trace(err);
+	}
 	
 	map1hash++;
 	console.log('map1hash',map1hash);
@@ -89,7 +97,7 @@ function dothething(request, response) {
 		this.end();
 		
 		var delta = milliseconds-this.requestTime;
-		if (delta > 1)
+		if (delta > 10)
 		{
 			console.log(milliseconds-this.requestTime+'ms', qpn, request.connection.remoteAddress);
 		}

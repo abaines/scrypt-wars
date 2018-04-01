@@ -70,13 +70,15 @@ function moveUnit(unitId,x,y)
 	$.ajax("map1/moveunit?id="+unitId+"&x="+x+"&y="+y+"");
 }
 
+const pingRate = 1000/60;
+
 function checkHash()
 {
 	$.getJSON( "map1/hash", function( data ) {
 			
 		if (data == lastHash)
 		{
-			setTimeout(checkHash, 1000);
+			setTimeout(checkHash, pingRate);
 			console.log('checkHash',data);
 		}
 		else
@@ -85,7 +87,7 @@ function checkHash()
 			{
 				lastHash = data;
 				console.log('checkHash',data,lastHash,'update complete');
-				setTimeout(checkHash, 1000);
+				setTimeout(checkHash, pingRate);
 			});
 			console.log('checkHash',data,lastHash,'starting update');
 		}
