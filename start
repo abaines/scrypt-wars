@@ -3,6 +3,6 @@
 
 echo "Starting Server"
 
-~/Documents/node-v8.11.1-linux-x64/bin/node ~/Documents/clone/server.js 
+~/Documents/node-v8.11.1-linux-x64/bin/node ~/Documents/clone/server.js  --trace-sync-io --trace-gc
 
 echo "End of Server"

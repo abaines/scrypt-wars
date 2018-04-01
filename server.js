@@ -74,24 +74,39 @@ function moveunit(query)
 	console.log('map1hash',map1hash);
 }
 
-function dothething(req, res) {
-	
-	var q = url.parse(req.url, true);
+function dothething(request, response) {
 
+	var milliseconds = (new Date).getTime();
+
+	var q = url.parse(request.url, true);
 	var qpn = q.pathname;
+	
+	
+	response.requestTime = milliseconds;
+	response.endLog = function()
+	{
+		var milliseconds = (new Date).getTime();
+		this.end();
+		
+		var delta = milliseconds-this.requestTime;
+		if (delta > 1)
+		{
+			console.log(milliseconds-this.requestTime+'ms', qpn, request.connection.remoteAddress);
+		}
+	};
+	
 
 	if (qpn!="/map1/hash")
 	{
-		console.time("createServer");
-		console.log(q.pathname);
+		console.log(q.pathname,request.connection.remoteAddress);
 	}
 
 	var makeSimpleFS = function(path,contentType)
 	{
 		fs.readFile(path, function(err, data) {
-			res.writeHead(200, {'Content-Type': contentType});
-			res.write(data);
-			res.end();
+			response.writeHead(200, {'Content-Type': contentType});
+			response.write(data);
+			response.endLog();
 		});
 	}
 
@@ -118,40 +133,33 @@ function dothething(req, res) {
 			break;
 
 		case "/map1/terrain":
-			res.writeHead(200, {'Content-Type': 'application/json'});
-			res.write(JSON.stringify(map1terrain));
-			res.end();
+			response.writeHead(200, {'Content-Type': 'application/json'});
+			response.write(JSON.stringify(map1terrain));
+			response.endLog();
 			break;
 
 		case "/map1/units":
-			console.time("/map1/units");
-			res.writeHead(200, {'Content-Type': 'application/json'});
-			res.write(JSON.stringify(map1units));
-			res.end();
-			console.timeEnd("/map1/units");
+			response.writeHead(200, {'Content-Type': 'application/json'});
+			response.write(JSON.stringify(map1units));
+			response.endLog();
 			break;
 			
 		case "/map1/moveunit":
 			moveunit(q.query);
+			response.endLog();
 			break;
 			
 		case "/map1/hash":
-			res.writeHead(200, {'Content-Type': 'application/json'});
-			res.write(JSON.stringify(map1hash));
-			res.end();
+			response.writeHead(200, {'Content-Type': 'application/json'});
+			response.write(JSON.stringify(map1hash));
+			response.endLog();
 			break;
 
 		default:
 			console.log("UNKNOWN QUERY PATHNAME");
 			console.log(q.pathname);
-			res.end();
-	}
-	
-	if (qpn!="/map1/hash")
-	{
-		console.timeEnd("createServer");
-	}
-	
+			response.endLog();
+	}	
 }
 
 http.createServer(dothething).listen(8080);

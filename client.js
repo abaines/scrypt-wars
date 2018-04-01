@@ -76,7 +76,7 @@ function checkHash()
 			
 		if (data == lastHash)
 		{
-			setTimeout(checkHash, 100);
+			setTimeout(checkHash, 1000);
 			console.log('checkHash',data);
 		}
 		else
@@ -85,7 +85,7 @@ function checkHash()
 			{
 				lastHash = data;
 				console.log('checkHash',data,lastHash,'update complete');
-				setTimeout(checkHash, 100);
+				setTimeout(checkHash, 1000);
 			});
 			console.log('checkHash',data,lastHash,'starting update');
 		}
