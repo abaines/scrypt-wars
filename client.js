@@ -2,7 +2,7 @@
 
 console.log("hello!");
 
-const pingRate = 1000/2;
+const pingRate = 1000/20;
 
 const tileSize = 64;
 
@@ -19,7 +19,8 @@ function unitClick(event)
 {
 	var id = $(event.target).attr('id');
 	selectedUnitId = parseInt( id.slice(4) );
-	console.log(id,selectedUnitId);
+	console.log(id,selectedUnitId,unitData[selectedUnitId]);
+	$("#selectedUnitId").text("selected unit: " + selectedUnitId);
 }
 
 function mapUpdate() {
@@ -35,7 +36,7 @@ function mapUpdate() {
 		console.log(unitData);
 
 		const xoffset = 8;
-		const yoffset = 164;
+		const yoffset = 8;
 
 		var unitId = 0;
 		data.forEach(function(unit) {
@@ -73,7 +74,7 @@ function tileClick(event)
 	
 	if (selectedUnitId !== null)
 	{
-		console.log(selectedUnitId);
+		console.log(selectedUnitId,col,row);
 		
 		moveUnit(selectedUnitId,col,row);
 	}
@@ -84,7 +85,7 @@ $.getJSON( "map1/terrain", function( data ) {
 	console.log(terrainData);
 
 	var r = 0;
-	data.forEach(function(row) {
+	data.Map.forEach(function(row) {
 
   		var c = 0;
   		row.forEach(function(el)
@@ -131,8 +132,8 @@ function checkHash()
 		{
 			mapUpdate().then(function()
 			{
-				lastHash = data;
 				console.log('checkHash',data,lastHash,'update complete');
+				lastHash = data;
 				setTimeout(checkHash, pingRate);
 			});
 			console.log('checkHash',data,lastHash,'starting update');

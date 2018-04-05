@@ -50,6 +50,13 @@ fs.readFile('map1/units.js', function(err, data) {
 	map1units = obj;
 });
 
+// P Plains
+// W Water
+// M Mountains
+// F Forest
+// R Roads
+// S Swamp
+
 var map1terrain;
 
 fs.readFile('map1/terrain.js', function(err, data) {
