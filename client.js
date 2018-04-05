@@ -2,17 +2,25 @@
 
 console.log("hello!");
 
+const pingRate = 1000/2;
+
 const tileSize = 64;
 
 var lastHash = -1;
 
+var unitData = null;
+
+var selectedUnitId = null;
+
+var terrainData = null;
+
+
 function unitClick(event)
 {
 	var id = $(event.target).attr('id');
-	console.log(id);
+	selectedUnitId = parseInt( id.slice(4) );
+	console.log(id,selectedUnitId);
 }
-
-var unitData = null;
 
 function mapUpdate() {
 
@@ -57,8 +65,20 @@ function makeTile(src, row, col)
 	return '<img src="'+src+'" style="width:64px;height:64px;" class="tile" row='+row+' col='+col+' />';
 }
 
-var terrainData = null;
-
+function tileClick(event)
+{
+	var row = $(event.target).attr('row');
+	var col = $(event.target).attr('col');
+	console.log('tile',row,col);
+	
+	if (selectedUnitId !== null)
+	{
+		console.log(selectedUnitId);
+		
+		moveUnit(selectedUnitId,col,row);
+	}
+}
+	
 $.getJSON( "map1/terrain", function( data ) {
 	terrainData = data;
 	console.log(terrainData);
@@ -83,12 +103,7 @@ $.getJSON( "map1/terrain", function( data ) {
   		r++;
 	});
 	
-	function tileClick(event)
-	{
-		var row = $(event.target).attr('row');
-		var col = $(event.target).attr('col');
-		console.log('tile',row,col);
-	}
+
 	
 	$( ".tile" ).click(tileClick);
 });
@@ -100,16 +115,17 @@ function moveUnit(unitId,x,y)
 	$.ajax("map1/moveunit?id="+unitId+"&x="+x+"&y="+y+"");
 }
 
-const pingRate = 1000/10;
 
 function checkHash()
 {
 	$.getJSON( "map1/hash", function( data ) {
+	
+		$("#lastHash").text("hash: " + data);
 			
 		if (data == lastHash)
 		{
 			setTimeout(checkHash, pingRate);
-			console.log('checkHash',data);
+			//console.log('checkHash',data);
 		}
 		else
 		{
