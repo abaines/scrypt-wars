@@ -97,7 +97,7 @@ function dothething(request, response) {
 		this.end();
 		
 		var delta = milliseconds-this.requestTime;
-		if (delta > 10)
+		if (delta > 30)
 		{
 			console.log(milliseconds-this.requestTime+'ms', qpn, request.connection.remoteAddress);
 		}

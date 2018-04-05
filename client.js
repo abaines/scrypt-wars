@@ -6,6 +6,14 @@ const tileSize = 64;
 
 var lastHash = -1;
 
+function unitClick(event)
+{
+	var id = $(event.target).attr('id');
+	console.log(id);
+}
+
+var unitData = null;
+
 function mapUpdate() {
 
 	var defer = $.Deferred();
@@ -15,7 +23,8 @@ function mapUpdate() {
 
 	$.getJSON( "map1/units", function( data ) {
 	
-		console.log(data);
+		unitData = data;
+		console.log(unitData);
 
 		const xoffset = 8;
 		const yoffset = 164;
@@ -33,6 +42,8 @@ function mapUpdate() {
 			unitId++;
 		});
 		
+		$( ".unit" ).click(unitClick);
+		
 		defer.resolve();
 	});
 	
@@ -41,8 +52,16 @@ function mapUpdate() {
 
 mapUpdate();
 
+function makeTile(src, row, col)
+{
+	return '<img src="'+src+'" style="width:64px;height:64px;" class="tile" row='+row+' col='+col+' />';
+}
+
+var terrainData = null;
+
 $.getJSON( "map1/terrain", function( data ) {
-	console.log(data);
+	terrainData = data;
+	console.log(terrainData);
 
 	var r = 0;
 	data.forEach(function(row) {
@@ -52,25 +71,36 @@ $.getJSON( "map1/terrain", function( data ) {
   		{
   			if (el=="P")
   			{
-  				$( "#map" ).append( '<img src="img/plains.png" style="width:64px;height:64px;"/>' );
+  				$( "#map" ).append( makeTile("img/plains.png",r,c) );
   			}
   			else
   			{
-  				$( "#map" ).append( '<img src="img/water.png" style="width:64px;height:64px;"/>' );
+  				$( "#map" ).append( makeTile("img/water.png",r,c) );
   			}
   			c++;
   		});
 		$( "#map" ).append( '<br>' );
   		r++;
 	});
+	
+	function tileClick(event)
+	{
+		var row = $(event.target).attr('row');
+		var col = $(event.target).attr('col');
+		console.log('tile',row,col);
+	}
+	
+	$( ".tile" ).click(tileClick);
 });
+
+
 
 function moveUnit(unitId,x,y)
 {
 	$.ajax("map1/moveunit?id="+unitId+"&x="+x+"&y="+y+"");
 }
 
-const pingRate = 1000/60;
+const pingRate = 1000/10;
 
 function checkHash()
 {
