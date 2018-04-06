@@ -2,11 +2,31 @@
 	{
 		"type": "soldier",
 		"location": [2,2],
-		"img": "img/blueSoldier.png"
+		"img": "img/blueSoldier.png",
+		"baseActionPoints": 3000,
+		"types": ["light","bio"],
+		"moveMatrix":
+		{
+			"P": 1000,
+			"F": 1500,
+			"R": 1000
+		}
 	},
 	{
 		"type": "tank",
 		"location": [4,3],
-		"img": "img/blueTank.png"
+		"img": "img/blueTank.png",
+		"baseActionPoints": 5000,
+		"types": ["armored","mechanical"],
+		"damage": {
+			"_base": 500,
+			"light": 50
+		},
+		"moveMatrix":
+		{
+			"P": 1000,
+			"F": 1600,
+			"R": 500
+		}
 	}	
 ]

@@ -19,8 +19,12 @@ function unitClick(event)
 {
 	var id = $(event.target).attr('id');
 	selectedUnitId = parseInt( id.slice(4) );
-	console.log(id,selectedUnitId,unitData[selectedUnitId]);
+	
+	var selectedUnit = unitData[selectedUnitId];
+	
+	console.log(id,selectedUnitId,selectedUnit);
 	$("#selectedUnitId").text("selected unit: " + selectedUnitId);
+	$("#selectedUnitActionPoints").text("Action Points: " + selectedUnit.actionPoints);
 }
 
 function mapUpdate() {
@@ -52,6 +56,13 @@ function mapUpdate() {
 		});
 		
 		$( ".unit" ).click(unitClick);
+		
+		// update action points GUI
+		if (selectedUnitId!=null)
+		{
+			var selectedUnit = unitData[selectedUnitId];
+			$("#selectedUnitActionPoints").text("Action Points: " + selectedUnit.actionPoints);
+		}
 		
 		defer.resolve();
 	});
@@ -90,14 +101,30 @@ $.getJSON( "map1/terrain", function( data ) {
   		var c = 0;
   		row.forEach(function(el)
   		{
-  			if (el=="P")
-  			{
-  				$( "#map" ).append( makeTile("img/plains.png",r,c) );
-  			}
-  			else
-  			{
-  				$( "#map" ).append( makeTile("img/water.png",r,c) );
-  			}
+  		
+  			switch( el.toLowerCase() ) {
+				case "p":
+					$( "#map" ).append( makeTile("img/plains.png",r,c) );
+					break;
+				case "w":
+					$( "#map" ).append( makeTile("img/water.png",r,c) );
+					break;
+				case "r":
+					$( "#map" ).append( makeTile("img/road.png",r,c) );
+					break;
+				case "m":
+					$( "#map" ).append( makeTile("img/mountain.png",r,c) );
+					break;
+				case "s":
+					$( "#map" ).append( makeTile("img/swamp.png",r,c) );
+					break;
+				case "f":
+					$( "#map" ).append( makeTile("img/forest.png",r,c) );
+					break;
+				default:
+					$( "#map" ).append( makeTile("img/error.png",r,c) );
+			}
+  		
   			c++;
   		});
 		$( "#map" ).append( '<br>' );
@@ -109,6 +136,12 @@ $.getJSON( "map1/terrain", function( data ) {
 	$( ".tile" ).click(tileClick);
 });
 
+function endTurn()
+{
+	$.ajax("map1/endturn?team=0");
+}
+
+$( "#endTurn" ).click(endTurn);
 
 
 function moveUnit(unitId,x,y)
