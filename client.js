@@ -24,7 +24,9 @@ function unitClick(event)
 	
 	console.log(id,selectedUnitId,selectedUnit);
 	$("#selectedUnitId").text("selected unit: " + selectedUnitId);
-	$("#selectedUnitActionPoints").text("Action Points: " + selectedUnit.actionPoints);
+	//$("#selectedUnitActionPoints").text("Action Points: " + selectedUnit.actionPoints);
+	
+	updateUnitTooltip();
 }
 
 function mapUpdate() {
@@ -57,18 +59,24 @@ function mapUpdate() {
 		
 		$( ".unit" ).click(unitClick);
 		
-		// update action points GUI
-		if (selectedUnitId!=null)
-		{
-			var selectedUnit = unitData[selectedUnitId];
-			$("#selectedUnitActionPoints").text("Action Points: " + selectedUnit.actionPoints);
-		}
+		updateUnitTooltip();
 		
 		defer.resolve();
 	});
 	
 	return defer.promise();
 }
+
+function updateUnitTooltip()
+{
+	// update action points GUI
+	if (selectedUnitId!=null)
+	{
+		var selectedUnit = unitData[selectedUnitId];
+		$("#selectedUnitActionPoints").text("Action Points: " + Math.round(selectedUnit.actionPoints));
+	}
+}
+
 
 mapUpdate();
 
