@@ -1,5 +1,9 @@
 # Scrypt Wars!
 
+## 2018 April 7
+
+![news: teams, animations, resizing maps, red unit](https://github.com/abaines-vt/scrypt-wars/blob/master/news/Capture4.PNG)
+
 ## 2018 April 5
 
 ![First GUI](https://github.com/abaines-vt/scrypt-wars/blob/master/news/Capture3.PNG)
