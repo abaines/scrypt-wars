@@ -16,6 +16,9 @@ var selectedUnitId = null;
 
 var terrainData = null;
 
+const xoffset = 8;
+const yoffset = 28;
+
 
 function unitClick(event) {
 	var id = $(event.target).attr('id');
@@ -34,7 +37,7 @@ function updateTileSize(tileSize) {
 	$( ".tile" ).css("width",tileSize).css("height",tileSize);
 }
 
-function mapUpdate() {
+function mapStart() {
 
 	var defer = $.Deferred();
 
@@ -45,9 +48,6 @@ function mapUpdate() {
 	
 		unitData = data;
 		console.log(unitData);
-
-		const xoffset = 8;
-		const yoffset = 28;
 
 		var unitId = 0;
 		data.forEach(function(unit) {
@@ -72,6 +72,36 @@ function mapUpdate() {
 	return defer.promise();
 }
 
+function mapUpdate() {
+
+	var defer = $.Deferred();
+
+	$.getJSON( "map1/units", function( data ) {
+	
+		unitData = data;
+		console.log(unitData);
+
+		var unitId = 0;
+		data.forEach(function(unit) {
+			var x = xoffset + tileSize*unit.location[0];
+			var y = yoffset + tileSize*unit.location[1];
+			
+			console.log(unit.img, x, y, unit.location);
+
+			//$( "#unit"+unitId ).css("left",x).css("top",y);
+			$( "#unit"+unitId ).animate({left:x+"px",top:y+"px"});
+			
+			unitId++;
+		});
+		
+		updateUnitTooltip();
+		
+		defer.resolve();
+	});
+	
+	return defer.promise();
+}
+
 function updateUnitTooltip() {
 	// update action points GUI
 	if (selectedUnitId!=null)
@@ -82,7 +112,7 @@ function updateUnitTooltip() {
 }
 
 
-mapUpdate();
+mapStart();
 
 function makeTile(src, row, col) {
 	return '<img src="'+src+'" style="width:'+tileSize+'px;height:'+tileSize+'px;" class="tile" row='+row+' col='+col+' />';
