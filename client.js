@@ -34,7 +34,8 @@ function unitClick(event) {
 }
 
 function updateTileSize(tileSize) {
-	$( ".tile" ).css("width",tileSize).css("height",tileSize);
+	//$( ".tile" ).css("width",tileSize).css("height",tileSize);
+	$( ".tile" ).animate({width:tileSize+"px",height:tileSize+"px"});
 }
 
 function mapStart() {
@@ -73,7 +74,6 @@ function mapStart() {
 }
 
 function mapUpdate() {
-
 	var defer = $.Deferred();
 
 	$.getJSON( "map1/units", function( data ) {
@@ -88,8 +88,14 @@ function mapUpdate() {
 			
 			console.log(unit.img, x, y, unit.location);
 
-			//$( "#unit"+unitId ).css("left",x).css("top",y);
-			$( "#unit"+unitId ).animate({left:x+"px",top:y+"px"});
+			/*if (!noAnimate) {
+				$( "#unit"+unitId ).css("left",x).css("top",y);
+			} else {
+				$( "#unit"+unitId ).animate({left:x+"px",top:y+"px"});
+			}*/
+			//$( "#unit"+unitId ).css("height",tileSize).css("width",tileSize);
+			//$( "#unit"+unitId ).animate({left:x+"px",top:y+"px"});
+			$( "#unit"+unitId ).animate({width:tileSize+"px",height:tileSize+"px",left:x+"px",top:y+"px"});
 			
 			unitId++;
 		});
@@ -228,7 +234,7 @@ function checkHash() {
 		}
 		else
 		{
-			mapUpdate().then(function()
+			mapUpdate(true).then(function()
 			{
 				console.log('checkHash',data,lastHash,'update complete');
 				lastHash = data;
