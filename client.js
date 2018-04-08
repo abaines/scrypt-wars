@@ -19,10 +19,26 @@ var terrainData = null;
 const xoffset = 8;
 const yoffset = 28;
 
+var teams = new Set();
+
+var selectedTeam = null;
+
 
 function unitClick(event) {
-	var id = $(event.target).attr('id');
-	selectedUnitId = parseInt( id.slice(4) );
+	var idAttr = $(event.target).attr('id');
+	
+	var id = parseInt( idAttr.slice(4) );
+	
+	var clickedUnit = unitData[id];
+	
+	console.log('clickedUnit.team',clickedUnit.team);
+	
+	if (clickedUnit.team != selectedTeam)
+	{
+		return;
+	}
+	
+	selectedUnitId = id;
 	
 	var selectedUnit = unitData[selectedUnitId];
 	
@@ -36,6 +52,15 @@ function unitClick(event) {
 function updateTileSize(tileSize) {
 	//$( ".tile" ).css("width",tileSize).css("height",tileSize);
 	$( ".tile" ).animate({width:tileSize+"px",height:tileSize+"px"});
+}
+
+function pickTeam(event)
+{
+	$( ".pickTeam" ).remove();
+	var team = $(event.target).attr('team');
+	console.log(team);
+	selectedTeam = team;
+	
 }
 
 function mapStart() {
@@ -61,11 +86,24 @@ function mapStart() {
 			$( "#unit"+unitId ).css("left",x).css("top",y);
 			
 			unitId++;
+			
+			var t = unit.team;
+			teams.add(t);
 		});
 		
 		$( ".unit" ).click(unitClick);
 		
 		updateUnitTooltip();
+		
+		console.log('teams',teams);
+		
+		for (var t of teams.keys())
+		{
+		//background-color: #e7e7e7; color: black;
+			$( "#pickTeam" ).append( '<button type="button" class="pickTeam" team="'+t+'" style="background-color: '+t+'; color:gray" >'+t+'</button>' );
+		};
+		
+		$( ".pickTeam" ).click(pickTeam);
 		
 		defer.resolve();
 	});
