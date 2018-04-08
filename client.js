@@ -4,7 +4,9 @@ console.log("hello!");
 
 const pingRate = 1000/20;
 
-const tileSize = 64;
+var tileScale = 24;
+
+var tileSize = 2**(tileScale*.25);
 
 var lastHash = -1;
 
@@ -15,8 +17,7 @@ var selectedUnitId = null;
 var terrainData = null;
 
 
-function unitClick(event)
-{
+function unitClick(event) {
 	var id = $(event.target).attr('id');
 	selectedUnitId = parseInt( id.slice(4) );
 	
@@ -27,6 +28,10 @@ function unitClick(event)
 	//$("#selectedUnitActionPoints").text("Action Points: " + selectedUnit.actionPoints);
 	
 	updateUnitTooltip();
+}
+
+function updateTileSize(tileSize) {
+	$( ".tile" ).css("width",tileSize).css("height",tileSize);
 }
 
 function mapUpdate() {
@@ -42,7 +47,7 @@ function mapUpdate() {
 		console.log(unitData);
 
 		const xoffset = 8;
-		const yoffset = 8;
+		const yoffset = 28;
 
 		var unitId = 0;
 		data.forEach(function(unit) {
@@ -51,7 +56,7 @@ function mapUpdate() {
 			
 			console.log(unit.img, x, y, unit.location);
 
-			$( "#map" ).append( '<img class="unit" id="unit'+unitId+'" src="'+unit.img+'" style="position:absolute;width:64px;height:64px;"/>' );
+			$( "#map" ).append( '<img class="unit" id="unit'+unitId+'" src="'+unit.img+'" style="position:absolute;width:'+tileSize+'px;height:'+tileSize+'px;"/>' );
 			$( "#unit"+unitId ).css("left",x).css("top",y);
 			
 			unitId++;
@@ -67,8 +72,7 @@ function mapUpdate() {
 	return defer.promise();
 }
 
-function updateUnitTooltip()
-{
+function updateUnitTooltip() {
 	// update action points GUI
 	if (selectedUnitId!=null)
 	{
@@ -80,13 +84,11 @@ function updateUnitTooltip()
 
 mapUpdate();
 
-function makeTile(src, row, col)
-{
-	return '<img src="'+src+'" style="width:64px;height:64px;" class="tile" row='+row+' col='+col+' />';
+function makeTile(src, row, col) {
+	return '<img src="'+src+'" style="width:'+tileSize+'px;height:'+tileSize+'px;" class="tile" row='+row+' col='+col+' />';
 }
 
-function tileClick(event)
-{
+function tileClick(event) {
 	var row = $(event.target).attr('row');
 	var col = $(event.target).attr('col');
 	console.log('tile',row,col);
@@ -144,22 +146,47 @@ $.getJSON( "map1/terrain", function( data ) {
 	$( ".tile" ).click(tileClick);
 });
 
-function endTurn()
-{
+function endTurn() {
 	$.ajax("map1/endturn?team=0");
 }
 
 $( "#endTurn" ).click(endTurn);
 
+//code to shrink and grow map
+function resetMap() {
+	tileScale = 24;
+	tileSize = Math.round(2**(tileScale*.25));
+	mapUpdate();
+	updateTileSize(tileSize);
+	$("#mapSize").text("Map tile size: " + tileScale + "("+tileSize+")");
+}
+$( "#resetMap" ).click(resetMap);
 
-function moveUnit(unitId,x,y)
-{
+function shrinkMap() {
+	tileScale--;
+	tileSize = Math.round(2**(tileScale*.25));
+	mapUpdate();
+	updateTileSize(tileSize);
+	$("#mapSize").text("Map tile size: " + tileScale + "("+tileSize+")");
+}
+$( "#shrinkMap" ).click(shrinkMap);
+
+
+function growMap() {
+	tileScale++;
+	tileSize = Math.round(2**(tileScale*.25));
+	mapUpdate();
+	updateTileSize(tileSize);
+	$("#mapSize").text("Map tile size: " + tileScale + "("+tileSize+")");
+}
+$( "#growMap" ).click(growMap);
+
+function moveUnit(unitId,x,y) {
 	$.ajax("map1/moveunit?id="+unitId+"&x="+x+"&y="+y+"");
 }
 
 
-function checkHash()
-{
+function checkHash() {
 	$.getJSON( "map1/hash", function( data ) {
 	
 		$("#lastHash").text("hash: " + data);
