@@ -197,6 +197,7 @@ function dothething(request, response) {
 			makeSimpleFS(qpn.substr(1),'text/html');
 			break;
 			
+		case "/img/selector.png":
 		case "/img/blueTank.png":
 		case "/img/blueSoldier.png":
 		case "/img/redSoldier.png":

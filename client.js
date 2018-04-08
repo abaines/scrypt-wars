@@ -17,7 +17,7 @@ var selectedUnitId = null;
 var terrainData = null;
 
 const xoffset = 8;
-const yoffset = 28;
+const yoffset = 31;
 
 var teams = new Set();
 
@@ -41,6 +41,8 @@ function unitClick(event) {
 	selectedUnitId = id;
 	
 	var selectedUnit = unitData[selectedUnitId];
+	
+	selectorUpdate(selectedUnit.location[0],selectedUnit.location[1]);
 	
 	console.log(id,selectedUnitId,selectedUnit);
 	$("#selectedUnitId").text("selected unit: " + selectedUnitId);
@@ -111,6 +113,20 @@ function mapStart() {
 	return defer.promise();
 }
 
+function selectorUpdate(x,y,animate) {
+	var selX = xoffset+x*tileSize;
+	var selY = yoffset+y*tileSize;
+	if ($( "#selector" ).length == 0) {
+		$( "#map" ).append( '<img id="selector" src="img/selector.png" style="position:absolute;width:'+tileSize+'px;height:'+tileSize+'px;"/>' );
+		$( "#selector" ).css("left",selX).css("top",selY);
+	}
+	if (animate) {
+		$( "#selector" ).animate({width:tileSize+"px",height:tileSize+"px",left:selX+"px",top:selY+"px"});
+	} else {
+		$( "#selector" ).css("left",selX).css("top",selY);
+	}
+}
+
 function mapUpdate() {
 	var defer = $.Deferred();
 
@@ -137,7 +153,11 @@ function mapUpdate() {
 			
 			unitId++;
 		});
-		
+		if (selectedUnitId != null) {
+			var selectedUnit = unitData[selectedUnitId];
+	
+			selectorUpdate(selectedUnit.location[0],selectedUnit.location[1],true);
+		}
 		updateUnitTooltip();
 		
 		defer.resolve();
