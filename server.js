@@ -13,33 +13,100 @@ var server = net.createServer(function(socket) {
 });
 
 server.listen(1337, '127.0.0.1');
-
-
-
-http.createServer(function (req, res) {
-	var millis = Date.now();
-	res.writeHead(200, {'Content-Type': 'text/html'});
-	res.end('Hello World after reboot two! ' + millis);
-}).listen(8080);
 */
+
 /*
 http.createServer(function (req, res) {
 	var millis = Date.now();
 	res.writeHead(200, {'Content-Type': 'text/html'});
 	res.end('Hello World after reboot two! ' + millis);
-}).listen(80);
-
-
-http.createServer(function (req, res) {
-  fs.readFile('index.html', function(err, data) {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write(data);
-    res.end();
-  });
 }).listen(8080);
 */
 
-var imgData = {};
+var fileData = {};
+
+fileData['/'] = {
+	"path": "index.html",
+	"contentType": 'text/html'
+}
+
+fileData['/client.js'] = {
+	"path": "client.js",
+	"contentType": 'text/html'
+}
+
+fileData['/jquery.js'] = {
+	"path": "jquery.js",
+	"contentType": 'text/html'
+}
+
+fileData['/favicon.ico'] = {
+	"path": "favicon.ico",
+	"contentType": 'image/x-icon'
+}
+
+//console.log(fileData);
+
+var rootFilePromises = [];
+
+for(var key in fileData)
+{ 
+	var p = new Promise(function(resolve, reject)
+	{
+		var url = key;
+		var filePath = fileData[url].path;
+	
+		//console.log('url',url,filePath);
+	
+		fs.readFile(filePath, function(err, data) {
+		
+				fileData[url].data = data;
+				resolve();
+				//console.log('resolved',url);
+		});
+	});
+	
+	rootFilePromises.push(p);
+}
+
+
+Promise.all(rootFilePromises).then(function(values) {
+	console.log("root files cached");
+	for (var url in fileData)
+	{
+		console.log('\t',fileData[url].path,url,fileData[url].contentType,fileData[url].data.length);
+	}
+});
+
+
+
+fs.readdir("img", (err, files) => {
+  files.forEach(file => {
+    if (file.endsWith(".png"))
+    {
+    	console.log("img",file);
+    	
+    	var filePath = 'img/'+file;
+    	fs.readFile(filePath, function(err, data) {
+
+			var url = '/' + filePath;
+			fileData[url] = {
+				"data": data,
+				"contentType": 'image',
+				"path": filePath
+			};
+			
+			console.log(filePath);
+		});   	
+    }
+    else
+    {
+    	console.log("img!",file);
+    }
+  });
+});
+
+
 
 
 
@@ -108,7 +175,7 @@ function moveunit(query)
 			throw "Invalid movement";
 		}
 		
-		var moveTile = map1terrain.Map[x][y];
+		var moveTile = map1terrain.Map[y][x];
 		console.log('moveTile',moveTile);
 		
 		var mmm = map1units.Units[id].moveMatrix[moveTile] || Infinity;
