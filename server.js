@@ -104,7 +104,7 @@ function moveunit(query)
 			throw "Invalid movement";
 		}
 		
-		var moveTile = map1terrain.Map[y][x];
+		var moveTile = map1terrain.Map[x][y];
 		console.log('moveTile',moveTile);
 		
 		var mmm = map1units.Units[id].moveMatrix[moveTile] || Infinity;
