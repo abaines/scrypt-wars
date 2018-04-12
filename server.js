@@ -39,6 +39,10 @@ http.createServer(function (req, res) {
 }).listen(8080);
 */
 
+var imgData = {};
+
+
+
 var map1hash = 1;
 
 var map1units;
