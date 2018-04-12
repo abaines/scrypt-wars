@@ -134,7 +134,7 @@ function mapUpdate() {
 	$.getJSON( "map1/units", function( data ) {
 	
 		unitData = data;
-		console.log(unitData);
+		console.log("Flag:",unitData);
 
 		var unitId = 0;
 		data.Units.forEach(function(unit) {
@@ -179,20 +179,20 @@ function updateUnitTooltip() {
 
 mapStart();
 
-function makeTile(src, row, col) {
-	return '<img src="'+src+'" style="width:'+tileSize+'px;height:'+tileSize+'px;" class="tile" row='+row+' col='+col+' />';
+function makeTile(src, y, x) {
+	return '<img src="'+src+'" style="width:'+tileSize+'px;height:'+tileSize+'px;" class="tile" y='+y+' x='+x+' />';
 }
 
 function tileClick(event) {
-	var row = $(event.target).attr('row');
-	var col = $(event.target).attr('col');
-	console.log('Clicked tile:',row,col);
+	var y = $(event.target).attr('y');
+	var x = $(event.target).attr('x');
+	console.log('Clicked tile:',x,y);
 	
 	if (selectedUnitId !== null)
 	{
-		console.log(selectedUnitId,row,col);
+		console.log(selectedUnitId,x,y);
 		
-		moveUnit(selectedUnitId,row,col);
+		moveUnit(selectedUnitId,x,y);
 	}
 }
 	
