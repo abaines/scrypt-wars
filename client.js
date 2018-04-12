@@ -4,7 +4,7 @@ console.log("hello!");
 
 const pingRate = 1000/20;
 
-var tileScale = 24;
+var tileScale = 23;
 
 var tileSize = 2**(tileScale*.25);
 

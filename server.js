@@ -47,7 +47,7 @@ fileData['/favicon.ico'] = {
 
 //console.log(fileData);
 
-var rootFilePromises = [];
+var clientFilePromises = [];
 
 for(var key in fileData)
 { 
@@ -66,45 +66,67 @@ for(var key in fileData)
 		});
 	});
 	
-	rootFilePromises.push(p);
+	clientFilePromises.push(p);
 }
 
-
-Promise.all(rootFilePromises).then(function(values) {
+/*
+Promise.all(clientFilePromises).then(function(values) {
 	console.log("root files cached");
 	for (var url in fileData)
 	{
 		console.log('\t',fileData[url].path,url,fileData[url].contentType,fileData[url].data.length);
 	}
 });
+*/
 
+new Promise(function(resolve, reject) {
 
+	fs.readdir("img", (err, files) => {
+		files.forEach(file => {
+			if (file.endsWith(".png"))
+			{
+				var p = new Promise(function(resolve, reject)
+				{
+					//console.log("img",file);
 
-fs.readdir("img", (err, files) => {
-  files.forEach(file => {
-    if (file.endsWith(".png"))
-    {
-    	console.log("img",file);
-    	
-    	var filePath = 'img/'+file;
-    	fs.readFile(filePath, function(err, data) {
+					var filePath = 'img/'+file;
+					fs.readFile(filePath, function(err, data) {
 
-			var url = '/' + filePath;
-			fileData[url] = {
-				"data": data,
-				"contentType": 'image',
-				"path": filePath
-			};
-			
-			console.log(filePath);
-		});   	
-    }
-    else
-    {
-    	console.log("img!",file);
-    }
-  });
+						var url = '/' + filePath;
+						fileData[url] = {
+							"data": data,
+							"contentType": 'image',
+							"path": filePath
+						};
+
+						//console.log(filePath);
+						resolve();
+					});   
+				});
+				
+				clientFilePromises.push(p);
+			}
+			else
+			{
+				console.log("img!",file);
+			}
+		});
+		resolve(files.length);
+	});
+
+}).then(function(value) {
+	console.log('readdir complete',value);
+	
+	Promise.all(clientFilePromises).then(function(values) {
+		console.log("client files cached");
+		for (var url in fileData)
+		{
+			console.log('\t',fileData[url].path,url,fileData[url].contentType,fileData[url].data.length);
+		}
+	});
 });
+
+
 
 
 
@@ -115,7 +137,7 @@ var map1hash = 1;
 var map1units;
 
 fs.readFile('map1/units.json', function(err, data) {
-	console.log("units.json");
+	console.log('map1/units.json');
 	var obj = JSON.parse(data);
 	console.log(obj);
 	map1units = obj;
@@ -124,9 +146,9 @@ fs.readFile('map1/units.json', function(err, data) {
 	{
 		endTurn();
 	}, 1000);
-
 });
 
+// Map legend:
 // P Plains
 // W Water
 // M Mountains
@@ -137,11 +159,10 @@ fs.readFile('map1/units.json', function(err, data) {
 var map1terrain;
 
 fs.readFile('map1/terrain.json', function(err, data) {
-	console.log("terrain.json");
-	var obj = JSON.parse(data);
-	//console.log(obj);
-	map1terrain = obj;
+	console.log('map1/terrain.json');
+	map1terrain = JSON.parse(data);
 	
+	// display map 1
 	var r = 0;
 	map1terrain.Map.forEach(function(row)
 	{
@@ -205,7 +226,7 @@ function moveunit(query)
 
 function endTurn(query)
 {
-	console.log(query);
+	console.log('endTurn',query);
 	
 	map1units.Units.forEach(function(unit)
 	{
