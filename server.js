@@ -231,7 +231,28 @@ function endTurn(query)
 
 function attack(query)
 {
-	console.log(query);
+	try
+	{
+		var attackerId = parseInt(query.attacker);
+		var defenderId = parseInt(query.defender);
+		console.log(query,attackerId, defenderId);
+		
+		var attacker = map1units.Units[attackerId];
+		var defender = map1units.Units[defenderId];
+		
+		attacker.health -= defender.damage._base;
+		defender.health -=attacker.damage._base;
+		
+		console.log(attacker,attacker.damage._base,attacker.health);
+		console.log(defender,defender.damage._base,defender.health);
+	}
+	catch(err)
+	{
+		console.trace(err);
+	}
+	
+	map1hash++;
+	console.log('map1hash',map1hash);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

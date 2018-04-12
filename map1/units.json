@@ -14,6 +14,9 @@
 				"S": 1500,
 				"R": 1000
 			},
+			"damage": {
+				"_base": 15000
+			},
 			"team": "blue",
 			"health": 50000
 		},
@@ -31,6 +34,9 @@
 				"S": 1500,
 				"R": 1000
 			},
+			"damage": {
+				"_base": 15000
+			},
 			"team": "red",
 			"health": 50000
 		},
@@ -41,8 +47,8 @@
 			"baseActionPoints": 5000,
 			"types": ["armored","mechanical"],
 			"damage": {
-				"_base": 500,
-				"light": 50
+				"_base": 35000,
+				"light": 5000
 			},
 			"moveMatrix":
 			{
