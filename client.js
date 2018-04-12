@@ -31,7 +31,7 @@ function unitClick(event) {
 	
 	var clickedUnit = unitData.Units[id];
 	
-	console.log('clickedUnit.team',clickedUnit.team);
+	console.log('clickedUnit (ID '+id+'):',clickedUnit);
 	
 	if (clickedUnit.team != selectedTeam)
 	{
@@ -44,8 +44,9 @@ function unitClick(event) {
 	
 	selectorUpdate(selectedUnit.location[0],selectedUnit.location[1]);
 	
-	console.log(id,selectedUnitId,selectedUnit);
-	$("#selectedUnitId").text("selected unit: " + selectedUnitId);
+	//console.log(id,selectedUnitId,selectedUnit);
+	console.log("Unit selected, selector updated",selectedUnit.location[0],selectedUnit.location[1]);
+	$("#selectedUnitId").text("*Selected unit ID: " + selectedUnitId);
 	//$("#selectedUnitActionPoints").text("Action Points: " + selectedUnit.actionPoints);
 	
 	updateUnitTooltip();
@@ -60,7 +61,7 @@ function pickTeam(event)
 {
 	$( ".pickTeam" ).remove();
 	var team = $(event.target).attr('team');
-	console.log(team);
+	console.log('Selected team:',team);
 	selectedTeam = team;
 	
 }
@@ -133,7 +134,7 @@ function mapUpdate() {
 	$.getJSON( "map1/units", function( data ) {
 	
 		unitData = data;
-		console.log(unitData);
+		console.log("Flag:",unitData);
 
 		var unitId = 0;
 		data.Units.forEach(function(unit) {
@@ -171,27 +172,27 @@ function updateUnitTooltip() {
 	if (selectedUnitId!=null)
 	{
 		var selectedUnit = unitData.Units[selectedUnitId];
-		$("#selectedUnitActionPoints").text("Action Points: " + Math.round(selectedUnit.actionPoints));
+		$("#selectedUnitActionPoints").text("*Action Points: " + Math.round(selectedUnit.actionPoints));
 	}
 }
 
 
 mapStart();
 
-function makeTile(src, row, col) {
-	return '<img src="'+src+'" style="width:'+tileSize+'px;height:'+tileSize+'px;" class="tile" row='+row+' col='+col+' />';
+function makeTile(src, y, x) {
+	return '<img src="'+src+'" style="width:'+tileSize+'px;height:'+tileSize+'px;" class="tile" y='+y+' x='+x+' />';
 }
 
 function tileClick(event) {
-	var row = $(event.target).attr('row');
-	var col = $(event.target).attr('col');
-	console.log('tile',row,col);
+	var y = $(event.target).attr('y');
+	var x = $(event.target).attr('x');
+	console.log('Clicked tile:',x,y);
 	
 	if (selectedUnitId !== null)
 	{
-		console.log(selectedUnitId,col,row);
+		console.log(selectedUnitId,x,y);
 		
-		moveUnit(selectedUnitId,col,row);
+		moveUnit(selectedUnitId,x,y);
 	}
 }
 	
@@ -287,7 +288,7 @@ function moveUnit(unitId,x,y) {
 function checkHash() {
 	$.getJSON( "map1/hash", function( data ) {
 	
-		$("#lastHash").text("hash: " + data);
+		$("#lastHash").text("*Hash: " + data);
 			
 		if (data == lastHash)
 		{
