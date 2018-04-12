@@ -246,6 +246,10 @@ function endTurn() {
 
 $( "#endTurn" ).click(endTurn);
 
+function attack(attackerId,defenderId) {
+	$.ajax("map1/attack?attacker="+attackerId+"&defender="+defenderId);
+}
+
 //code to shrink and grow map
 function resetMap() {
 	tileScale = 24;

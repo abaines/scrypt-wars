@@ -13,7 +13,8 @@
 			"S": 1500,
 			"R": 1000
 		},
-		"team": "blue"
+		"team": "blue",
+		"health": 50000
 	},
 	{
 		"type": "soldier",
@@ -29,7 +30,8 @@
 			"S": 1500,
 			"R": 1000
 		},
-		"team": "red"
+		"team": "red",
+		"health": 50000
 	},
 	{
 		"type": "tank",
@@ -49,6 +51,7 @@
 			"S": 1600,
 			"R": 500
 		},
-		"team": "blue"
+		"team": "blue",
+		"health": 150000
 	}	
 ]

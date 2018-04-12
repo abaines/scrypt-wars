@@ -151,6 +151,13 @@ function endTurn(query)
 	console.log('map1hash',map1hash);
 }
 
+
+function attack(query)
+{
+	console.log(query);
+}
+
+
 function dothething(request, response) {
 
 	var milliseconds = (new Date).getTime();
@@ -235,8 +242,14 @@ function dothething(request, response) {
 			moveunit(q.query);
 			response.endLog();
 			break;
+			
 		case "/map1/endturn":
 			endTurn(q.query);
+			response.endLog();
+			break;
+			
+		case "/map1/attack":
+			attack(q.query);
 			response.endLog();
 			break;
 			
