@@ -39,6 +39,10 @@ http.createServer(function (req, res) {
 }).listen(8080);
 */
 
+var imgData = {};
+
+
+
 var map1hash = 1;
 
 var map1units;
@@ -104,7 +108,7 @@ function moveunit(query)
 			throw "Invalid movement";
 		}
 		
-		var moveTile = map1terrain.Map[y][x];
+		var moveTile = map1terrain.Map[x][y];
 		console.log('moveTile',moveTile);
 		
 		var mmm = map1units.Units[id].moveMatrix[moveTile] || Infinity;
