@@ -15,70 +15,57 @@ var server = net.createServer(function(socket) {
 server.listen(1337, '127.0.0.1');
 */
 
-/*
-http.createServer(function (req, res) {
-	var millis = Date.now();
-	res.writeHead(200, {'Content-Type': 'text/html'});
-	res.end('Hello World after reboot two! ' + millis);
-}).listen(8080);
-*/
 
-var fileData = {};
+// files to make available to clients
+// key is url
+// path is relative path to file on disk
+// contentType is type of file to tell the client
+// cached into memory at server startup
+var clientFileData = new Map();
 
-fileData['/'] = {
+clientFileData.set('/',{
 	"path": "index.html",
 	"contentType": 'text/html'
-}
+});
 
-fileData['/client.js'] = {
+clientFileData.set('/client.js',{
 	"path": "client.js",
 	"contentType": 'text/html'
-}
+});
 
-fileData['/jquery.js'] = {
+clientFileData.set('/jquery.js',{
 	"path": "jquery.js",
 	"contentType": 'text/html'
-}
+});
 
-fileData['/favicon.ico'] = {
+clientFileData.set('/favicon.ico',{
 	"path": "favicon.ico",
 	"contentType": 'image/x-icon'
-}
+});
 
-//console.log(fileData);
-
+// list of promises for each of the files we need to read from disk
 var clientFilePromises = [];
 
-for(var key in fileData)
-{ 
+
+clientFileData.forEach(function(value, key, map)
+{
 	var p = new Promise(function(resolve, reject)
 	{
 		var url = key;
-		var filePath = fileData[url].path;
-	
-		//console.log('url',url,filePath);
+		var filePath = value.path;
 	
 		fs.readFile(filePath, function(err, data) {
 		
-				fileData[url].data = data;
+				value.data = data;
 				resolve();
-				//console.log('resolved',url);
 		});
 	});
 	
 	clientFilePromises.push(p);
-}
-
-/*
-Promise.all(clientFilePromises).then(function(values) {
-	console.log("root files cached");
-	for (var url in fileData)
-	{
-		console.log('\t',fileData[url].path,url,fileData[url].contentType,fileData[url].data.length);
-	}
 });
-*/
 
+
+// collect all of the .png files from the `img` folder and make them available to clients
 new Promise(function(resolve, reject) {
 
 	fs.readdir("img", (err, files) => {
@@ -87,19 +74,16 @@ new Promise(function(resolve, reject) {
 			{
 				var p = new Promise(function(resolve, reject)
 				{
-					//console.log("img",file);
-
 					var filePath = 'img/'+file;
 					fs.readFile(filePath, function(err, data) {
 
 						var url = '/' + filePath;
-						fileData[url] = {
+						clientFileData.set(url,{
 							"data": data,
 							"contentType": 'image',
 							"path": filePath
-						};
+						});
 
-						//console.log(filePath);
 						resolve();
 					});   
 				});
@@ -118,11 +102,12 @@ new Promise(function(resolve, reject) {
 	console.log('readdir complete',value);
 	
 	Promise.all(clientFilePromises).then(function(values) {
+		// all of the client files have been read into cache
 		console.log("client files cached");
-		for (var url in fileData)
+		clientFileData.forEach(function(value, key, map)
 		{
-			console.log('\t',fileData[url].path,url,fileData[url].contentType,fileData[url].data.length);
-		}
+			console.log('\t',value.path,key,value.contentType,value.data.length);
+		});
 	});
 });
 
@@ -249,14 +234,15 @@ function attack(query)
 	console.log(query);
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// handle server requests
+///////////////////////////////////////////////////////////////////////////////////////////////////
 function dothething(request, response) {
 
 	var milliseconds = (new Date).getTime();
 
 	var q = url.parse(request.url, true);
 	var qpn = q.pathname;
-	
 	
 	response.requestTime = milliseconds;
 	response.endLog = function()
@@ -271,53 +257,22 @@ function dothething(request, response) {
 		}
 	};
 	
-
 	if (qpn!="/map1/hash")
 	{
 		console.log(q.pathname,request.connection.remoteAddress);
 	}
-
-	var makeSimpleFS = function(path,contentType)
+	
+	if (clientFileData.has(qpn))
 	{
-		fs.readFile(path, function(err, data) {
-			response.writeHead(200, {'Content-Type': contentType});
-			response.write(data);
-			response.endLog();
-		});
+		var fileData = clientFileData.get(qpn);
+		//console.log('magic!',fileData.path);
+		response.writeHead(200, {'Content-Type': fileData.contentType});
+		response.write(fileData.data);
+		response.endLog();
+		return;
 	}
 
 	switch(qpn) {
-		case "/":
-			makeSimpleFS('index.html','text/html');
-			break;
-			
-		case "/client.js":
-		case "/jquery.js":
-			makeSimpleFS(qpn.substr(1),'text/html');
-			break;
-			
-		case "/img/selector.png":
-		case "/img/blueTank.png":
-		case "/img/blueSoldier.png":
-		case "/img/redSoldier.png":
-		case "/img/greenSoldier.png":
-		case "/img/blackSoldier.png":
-		case "/img/whiteSoldier.png":
-		case "/img/water.png":
-		case "/img/plains.png":
-		case "/img/error.png":
-		case "/img/road.png":
-		case "/img/mountain.png":
-		case "/img/forest.png":
-		case "/img/swamp.png":
-			makeSimpleFS(qpn.substr(1),'image');
-			break;
-
-		case "/favicon.ico":
-			// icons are stupid
-			makeSimpleFS(qpn.substr(1),'image/x-icon');
-			break;
-
 		case "/map1/terrain":
 			response.writeHead(200, {'Content-Type': 'application/json'});
 			response.write(JSON.stringify(map1terrain));
