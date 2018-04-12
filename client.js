@@ -29,7 +29,7 @@ function unitClick(event) {
 	
 	var id = parseInt( idAttr.slice(4) );
 	
-	var clickedUnit = unitData[id];
+	var clickedUnit = unitData.Units[id];
 	
 	console.log('clickedUnit.team',clickedUnit.team);
 	
@@ -40,7 +40,7 @@ function unitClick(event) {
 	
 	selectedUnitId = id;
 	
-	var selectedUnit = unitData[selectedUnitId];
+	var selectedUnit = unitData.Units[selectedUnitId];
 	
 	selectorUpdate(selectedUnit.location[0],selectedUnit.location[1]);
 	
@@ -78,7 +78,7 @@ function mapStart() {
 		console.log(unitData);
 
 		var unitId = 0;
-		data.forEach(function(unit) {
+		data.Units.forEach(function(unit) {
 			var x = xoffset + tileSize*unit.location[0];
 			var y = yoffset + tileSize*unit.location[1];
 			
@@ -136,7 +136,7 @@ function mapUpdate() {
 		console.log(unitData);
 
 		var unitId = 0;
-		data.forEach(function(unit) {
+		data.Units.forEach(function(unit) {
 			var x = xoffset + tileSize*unit.location[0];
 			var y = yoffset + tileSize*unit.location[1];
 			
@@ -154,7 +154,7 @@ function mapUpdate() {
 			unitId++;
 		});
 		if (selectedUnitId != null) {
-			var selectedUnit = unitData[selectedUnitId];
+			var selectedUnit = unitData.Units[selectedUnitId];
 	
 			selectorUpdate(selectedUnit.location[0],selectedUnit.location[1],true);
 		}
@@ -170,7 +170,7 @@ function updateUnitTooltip() {
 	// update action points GUI
 	if (selectedUnitId!=null)
 	{
-		var selectedUnit = unitData[selectedUnitId];
+		var selectedUnit = unitData.Units[selectedUnitId];
 		$("#selectedUnitActionPoints").text("Action Points: " + Math.round(selectedUnit.actionPoints));
 	}
 }

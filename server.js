@@ -43,8 +43,8 @@ var map1hash = 1;
 
 var map1units;
 
-fs.readFile('map1/units.js', function(err, data) {
-	console.log("units.js");
+fs.readFile('map1/units.json', function(err, data) {
+	console.log("units.json");
 	var obj = JSON.parse(data);
 	console.log(obj);
 	map1units = obj;
@@ -65,8 +65,8 @@ fs.readFile('map1/units.js', function(err, data) {
 
 var map1terrain;
 
-fs.readFile('map1/terrain.js', function(err, data) {
-	console.log("terrain.js");
+fs.readFile('map1/terrain.json', function(err, data) {
+	console.log("terrain.json");
 	var obj = JSON.parse(data);
 	//console.log(obj);
 	map1terrain = obj;
@@ -99,7 +99,7 @@ function moveunit(query)
 		var y = parseInt(query.y);
 		
 		
-		if (Math.abs(map1units[id].location[0] - x)>1 || Math.abs(map1units[id].location[1] - y)>1)
+		if (Math.abs(map1units.Units[id].location[0] - x)>1 || Math.abs(map1units.Units[id].location[1] - y)>1)
 		{
 			throw "Invalid movement";
 		}
@@ -107,12 +107,12 @@ function moveunit(query)
 		var moveTile = map1terrain.Map[y][x];
 		console.log('moveTile',moveTile);
 		
-		var mmm = map1units[id].moveMatrix[moveTile] || Infinity;
+		var mmm = map1units.Units[id].moveMatrix[moveTile] || Infinity;
 		console.log('mmm',mmm);
 		
-		var cost = Math.hypot(map1units[id].location[0] - x,map1units[id].location[1] - y)*mmm;
+		var cost = Math.hypot(map1units.Units[id].location[0] - x,map1units.Units[id].location[1] - y)*mmm;
 		
-		if ((map1units[id].actionPoints||0) < cost)
+		if ((map1units.Units[id].actionPoints||0) < cost)
 		{
 			throw "not enough action points";
 		}
@@ -120,8 +120,8 @@ function moveunit(query)
 
 		var location = [x,y];
 
-		map1units[id].location = location;
-		map1units[id].actionPoints -= cost;
+		map1units.Units[id].location = location;
+		map1units.Units[id].actionPoints -= cost;
 	}
 	catch(err)
 	{
@@ -136,7 +136,7 @@ function endTurn(query)
 {
 	console.log(query);
 	
-	map1units.forEach(function(unit)
+	map1units.Units.forEach(function(unit)
 	{
 		unit.actionPoints = (unit.actionPoints||0) + unit.baseActionPoints;
 		
