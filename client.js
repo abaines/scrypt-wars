@@ -1,6 +1,6 @@
 "use strict";
 
-console.log("client.js started.");
+console.log("client.js loaded.");
 
 const pingRate = 1000/20;
 
