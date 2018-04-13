@@ -19,7 +19,8 @@
 			},
 			"team": "blue",
 			"health": 50000,
-			"range":1.4
+			"range":1.4,
+			"attackCost": 1500
 		},
 		{
 			"type": "soldier",
@@ -40,7 +41,8 @@
 			},
 			"team": "red",
 			"health": 50000,
-			"range":1.4
+			"range":1.4,
+			"attackCost": 1500
 		},
 		{
 			"type": "tank",
@@ -62,7 +64,8 @@
 			},
 			"team": "blue",
 			"health": 150000,
-			"range":1.5
+			"range":1.5,
+			"attackCost": 2000
 		}	
 	]
 }
