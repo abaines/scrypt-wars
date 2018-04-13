@@ -71,7 +71,7 @@ function updateTileSize(tileSize) {
 
 function pickTeam(event)
 {
-	$( ".pickTeam" ).remove();
+	$( "#pickTeamModal" ).remove();
 	var team = $(event.target).attr('team');
 	console.log('Selected team:',team);
 	selectedTeam = team;

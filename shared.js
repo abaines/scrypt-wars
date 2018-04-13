@@ -20,3 +20,4 @@
 })(typeof exports === 'undefined'? this['shared']={}: exports);
 
 console.log("shared.js loaded outside.");
+
