@@ -10,11 +10,25 @@
 		return 4;
 	};
 
-	exports.checkValidAttack = function()
+	exports.calculateDistance = function(locationAlpha,locationBravo)
 	{
-		return false;
+		var distance = Math.hypot(locationAlpha[0] - locationBravo[0],locationAlpha[1] - locationBravo[1]);
+		return distance;
 	};
 	
+	exports.checkValidAttack = function(attacker,defender)
+	{
+		if (exports.calculateDistance(attacker.location,defender.location) > attacker.range)
+		{
+			return "Too far.";
+		}
+		if (attacker.actionPoints < attacker.attackCost)
+		{
+			return "Not enough Action points.";
+		}
+		return "Valid attack.";
+	};
+
 	console.log("shared.js loaded inside.");
 
 })(typeof exports === 'undefined'? this['shared']={}: exports);

@@ -37,12 +37,21 @@ function unitClick(event) {
 	{
 		if (selectedUnitId != null)
 		{
-			if (shared.checkValidAttack())
+			var attackerId = selectedUnitId;
+			var defenderId = id;
+			var attacker = unitData.Units[attackerId];
+			var defender = unitData.Units[defenderId];
+			console.log("attacker:",attacker);
+			console.log("defender:",defender);
+			console.log("id:",id,"defenderId",defenderId,"unitData.Units[defenderId]",unitData.Units[defenderId]);
+			var attackResponse = shared.checkValidAttack(attacker,defender);
+			if (attackResponse === "Valid attack.")
 			{
+				console.log(attackResponse);
 				attack(attackerId,defenderId);
 			} else
 			{
-				console.log("Invalid attack.");
+				console.log("Invalid attack:",attackResponse);
 			}
 		}
 		return;
