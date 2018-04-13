@@ -1,18 +1,22 @@
 "use strict";
 
+(function(exports){
 
-module.exports.xkcdRandom = function()
-{
-	console.log("gold standard");
-	return 4;
-};
+    // your code goes here
+    
+	exports.xkcdRandom = function()
+	{
+		console.log("gold standard");
+		return 4;
+	};
 
+	exports.checkValidAttack = function()
+	{
+		return false;
+	};
+	
+	console.log("shared.js loaded inside.");
 
-module.exports.checkValidAttack = function()
-{
-	return false;
-};
+})(typeof exports === 'undefined'? this['mymodule']={}: exports);
 
-
-console.log("shared.js loaded.");
-
+console.log("shared.js loaded outside.");

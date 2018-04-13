@@ -362,7 +362,7 @@ function dothething(request, response) {
 
 http.createServer(dothething).listen(8080);
 
-console.log(shared.checkValidAttack());
+console.log(shared.xkcdRandom());
 
 console.log("end of hello.js");
 

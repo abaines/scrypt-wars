@@ -37,7 +37,7 @@ function unitClick(event) {
 	{
 		if (selectedUnitId != null)
 		{
-			if (checkValidAttack())
+			if (mymodule.checkValidAttack())
 			{
 				attack(attackerId,defenderId);
 			} else
