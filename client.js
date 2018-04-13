@@ -44,10 +44,8 @@ function unitClick(event) {
 			{
 				console.log("Invalid attack.");
 			}
-		} else
-		{
-			return;
 		}
+		return;
 	}
 	
 	selectedUnitId = id;
