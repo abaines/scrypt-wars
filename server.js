@@ -17,7 +17,7 @@ server.listen(1337, '127.0.0.1');
 */
 
 
-var useCache = false;
+var useCache = true;
 
 
 // files to make available to clients
@@ -177,7 +177,7 @@ fs.readFile('map1/terrain.json', function(err, data) {
 });
 
 
-function moveunit(query)
+function moveunit(query,response)
 {
 	console.log(query);
 	console.log(map1units);
@@ -192,7 +192,9 @@ function moveunit(query)
 		
 		if (Math.abs(map1units.Units[id].location[0] - x)>1 || Math.abs(map1units.Units[id].location[1] - y)>1)
 		{
-			throw "Invalid movement";
+			var err = "Invalid Movement";
+			response.write(err);
+			throw err;
 		}
 		
 		var moveTile = map1terrain.Map[y][x];
@@ -205,7 +207,9 @@ function moveunit(query)
 		
 		if ((map1units.Units[id].actionPoints||0) < cost)
 		{
-			throw "not enough action points";
+			var err = "Not Enough Action Points";
+			response.write(err);
+			throw err;
 		}
 		
 
@@ -268,6 +272,8 @@ function attack(query)
 	map1hash++;
 	console.log('map1hash',map1hash);
 }
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // handle server requests
@@ -332,7 +338,7 @@ function dothething(request, response) {
 			break;
 			
 		case "/map1/moveunit":
-			moveunit(q.query);
+			moveunit(q.query,response);
 			response.endLog();
 			break;
 			
