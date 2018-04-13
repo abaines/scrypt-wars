@@ -260,15 +260,10 @@ $.getJSON( "map1/terrain", function( data ) {
 	$( ".tile" ).click(tileClick);
 });
 
-function endTurn() {
-	$.ajax("map1/endturn?team=0");
-}
 
 $( "#endTurn" ).click(endTurn);
 
-function attack(attackerId,defenderId) {
-	$.ajax("map1/attack?attacker="+attackerId+"&defender="+defenderId);
-}
+
 
 //code to shrink and grow map
 function resetMap() {
@@ -299,8 +294,29 @@ function growMap() {
 }
 $( "#growMap" ).click(growMap);
 
-function moveUnit(unitId,x,y) {
-	$.ajax("map1/moveunit?id="+unitId+"&x="+x+"&y="+y+"");
+
+function displayAjaxReponse(result)
+{
+	if (result.responseText)
+	{
+		console.error(result.responseText);
+	}
+}
+
+
+function endTurn()
+{
+	$.ajax({url:"map1/endturn?team=0",complete:displayAjaxReponse});
+}
+
+function attack(attackerId,defenderId)
+{
+	$.ajax({url:"map1/attack?attacker="+attackerId+"&defender="+defenderId,complete:displayAjaxReponse});
+}
+
+function moveUnit(unitId,x,y)
+{
+	$.ajax({url:"map1/moveunit?id="+unitId+"&x="+x+"&y="+y+"",complete:displayAjaxReponse});
 }
 
 
