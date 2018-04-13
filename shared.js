@@ -17,6 +17,6 @@
 	
 	console.log("shared.js loaded inside.");
 
-})(typeof exports === 'undefined'? this['mymodule']={}: exports);
+})(typeof exports === 'undefined'? this['shared']={}: exports);
 
 console.log("shared.js loaded outside.");
