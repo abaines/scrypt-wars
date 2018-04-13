@@ -16,6 +16,9 @@ server.listen(1337, '127.0.0.1');
 */
 
 
+var useCache = true;
+
+
 // files to make available to clients
 // key is url
 // path is relative path to file on disk
@@ -296,10 +299,21 @@ function dothething(request, response) {
 	if (clientFileData.has(qpn))
 	{
 		var fileData = clientFileData.get(qpn);
-		//console.log('magic!',fileData.path);
-		response.writeHead(200, {'Content-Type': fileData.contentType});
-		response.write(fileData.data);
-		response.endLog();
+		
+		if (useCache)
+		{
+			response.writeHead(200, {'Content-Type': fileData.contentType});
+			response.write(fileData.data);
+			response.endLog();
+		}
+		else
+		{
+			fs.readFile(fileData.path, function(err, data) {
+				response.writeHead(200, {'Content-Type': fileData.contentType});
+				response.write(data);
+				response.endLog();
+			});
+		}
 		return;
 	}
 
