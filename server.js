@@ -17,7 +17,7 @@ server.listen(1337, '127.0.0.1');
 */
 
 
-var useCache = true;
+var useCache = false;
 
 
 // files to make available to clients
