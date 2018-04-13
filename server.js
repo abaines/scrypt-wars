@@ -3,6 +3,7 @@
 var http = require('http');
 var url = require('url');
 var fs = require('fs');
+var shared = require('./shared.js');
 
 /*
 var net = require('net');
@@ -16,7 +17,7 @@ server.listen(1337, '127.0.0.1');
 */
 
 
-var useCache = true;
+var useCache = false;
 
 
 // files to make available to clients
@@ -361,5 +362,9 @@ function dothething(request, response) {
 
 http.createServer(dothething).listen(8080);
 
+console.log(shared.checkValidAttack());
+
 console.log("end of hello.js");
+
+
 
