@@ -1,12 +1,18 @@
 "use strict";
 
-console.log("shared.js loaded.");
 
-function checkValidAttack()
+module.exports.xkcdRandom = function()
 {
-	console.log("derp?");
-	return false;
-}
+	console.log("gold standard");
+	return 4;
+};
 
-module.exports.checkValidAttack = checkValidAttack;
+
+module.exports.checkValidAttack = function()
+{
+	return false;
+};
+
+
+console.log("shared.js loaded.");
 
