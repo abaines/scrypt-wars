@@ -1,6 +1,6 @@
 "use strict";
 
-console.log("hello!");
+console.log("client.js loaded.");
 
 const pingRate = 1000/20;
 
@@ -35,7 +35,19 @@ function unitClick(event) {
 	
 	if (clickedUnit.team != selectedTeam)
 	{
-		return;
+		if (selectedUnitId != null)
+		{
+			if (checkValidAttack())
+			{
+				attack(attackerId,defenderId);
+			} else
+			{
+				console.log("Invalid attack.");
+			}
+		} else
+		{
+			return;
+		}
 	}
 	
 	selectedUnitId = id;
@@ -253,7 +265,7 @@ function attack(attackerId,defenderId) {
 
 //code to shrink and grow map
 function resetMap() {
-	tileScale = 23;
+	tileScale = 24;
 	tileSize = Math.round(2**(tileScale*.25));
 	mapUpdate();
 	updateTileSize(tileSize);
