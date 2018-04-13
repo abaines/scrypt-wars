@@ -30,12 +30,22 @@ clientFileData.set('/',{
 
 clientFileData.set('/client.js',{
 	"path": "client.js",
-	"contentType": 'text/html'
+	"contentType": 'text/javascript'
 });
 
 clientFileData.set('/jquery.js',{
 	"path": "jquery.js",
-	"contentType": 'text/html'
+	"contentType": 'text/javascript'
+});
+
+clientFileData.set('/shared.js',{
+	"path": "shared.js",
+	"contentType": 'text/javascript'
+});
+
+clientFileData.set('/client.css',{
+	"path": "client.css",
+	"contentType": 'text/css'
 });
 
 clientFileData.set('/favicon.ico',{

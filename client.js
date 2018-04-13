@@ -253,7 +253,7 @@ function attack(attackerId,defenderId) {
 
 //code to shrink and grow map
 function resetMap() {
-	tileScale = 24;
+	tileScale = 23;
 	tileSize = Math.round(2**(tileScale*.25));
 	mapUpdate();
 	updateTileSize(tileSize);
