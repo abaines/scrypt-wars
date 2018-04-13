@@ -18,7 +18,8 @@
 				"_base": 15000
 			},
 			"team": "blue",
-			"health": 50000
+			"health": 50000,
+			"range":1.4
 		},
 		{
 			"type": "soldier",
@@ -38,7 +39,8 @@
 				"_base": 15000
 			},
 			"team": "red",
-			"health": 50000
+			"health": 50000,
+			"range":1.4
 		},
 		{
 			"type": "tank",
@@ -59,7 +61,8 @@
 				"R": 500
 			},
 			"team": "blue",
-			"health": 150000
+			"health": 150000,
+			"range":1.5
 		}	
 	]
 }
