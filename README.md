@@ -1,5 +1,15 @@
 # Scrypt Wars!
 
+## 2018 April 13
+
+![news: pick team splash screen](https://github.com/abaines-vt/scrypt-wars/blob/master/news/Capture5.PNG)
+
+* Attacks work!
+* Pick team splash Screen
+* Share JavaScript files
+* Range & Cost checks for attacks
+* Server responses with errors that client log can view
+
 ## 2018 April 11
 
 * Server-side attack framework
