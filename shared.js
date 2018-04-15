@@ -27,12 +27,12 @@
 			return "Not enough Action points.";
 		}
 		
-		if (attacker.health<0)
+		if (attacker.health<=0)
 		{
 			return "Attacker is dead.";
 		}
 		
-		if (defender.health<0)
+		if (defender.health<=0)
 		{
 			return "Defender is dead.";
 		}

@@ -17,7 +17,7 @@ var selectedUnitId = null;
 var terrainData = null;
 
 const xoffset = 8;
-const yoffset = 31;
+const yoffset = 30;
 
 var teams = new Set();
 
