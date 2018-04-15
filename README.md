@@ -4,7 +4,7 @@
 
 ![news: deaths and wins and sounds](https://github.com/abaines-vt/scrypt-wars/blob/master/news/Capture6.PNG)
 
-* Attacks new and improved with deaths (with super realistic sound!) and winning!
+* Deaths improved with infinity% more deadliness and super realistic sound!
 * Invalid movement now clears your unit selector
 * Invalid X,Y parameters to selectorUpdate now reset the selector
 * When all enemy units are removed, your efforts are applauded!
