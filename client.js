@@ -23,8 +23,13 @@ var teams = new Set();
 
 var selectedTeam = null;
 
-var audioAttack = new Audio('audio/pop.mp3');
-var winSound = new Audio('audio/clap.mp3');
+var sound = null;
+
+function playAudio(file)
+{
+	sound = new Audio(file);
+	sound.play();
+}
 
 function unitClick(event) {
 	var idAttr = $(event.target).attr('id');
@@ -51,6 +56,7 @@ function unitClick(event) {
 			{
 				console.log("Valid attack.");
 				attack(attackerId,defenderId);
+				playAudio(attacker.attackSound);
 			} else
 			{
 				console.log("Invalid attack:",attackResponse);
@@ -93,6 +99,9 @@ function mapStart() {
 
 	// TODO: move inside getJSON to reduce flicker
 	$( ".unit" ).remove();
+	
+	//ensure the Map tile size displays correctly when a nonstandard size (<>24) is set as start value.
+	$("#mapSize").text("Map tile size: " + tileScale + "("+tileSize+")");
 
 	$.getJSON( "map1/units", function( data ) {
 	
@@ -101,18 +110,20 @@ function mapStart() {
 
 		var unitId = 0;
 		data.Units.forEach(function(unit) {
-			var x = xoffset + tileSize*unit.location[0];
-			var y = yoffset + tileSize*unit.location[1];
-			
-			console.log(unit.img, x, y, unit.location);
+			if (unit.health >0) {
+				var x = xoffset + tileSize*unit.location[0];
+				var y = yoffset + tileSize*unit.location[1];
+				
+				console.log(unit.img, x, y, unit.location);
 
-			$( "#map" ).append( '<img class="unit" id="unit'+unitId+'" src="'+unit.img+'" style="position:absolute;width:'+tileSize+'px;height:'+tileSize+'px;"/>' );
-			$( "#unit"+unitId ).css("left",x).css("top",y);
-			
-			unitId++;
-			
-			var t = unit.team;
-			teams.add(t);
+				$( "#map" ).append( '<img class="unit" id="unit'+unitId+'" src="'+unit.img+'" style="position:absolute;width:'+tileSize+'px;height:'+tileSize+'px;"/>' );
+				$( "#unit"+unitId ).css("left",x).css("top",y);
+				
+				unitId++;
+				
+				var t = unit.team;
+				teams.add(t);
+			}
 		});
 		
 		$( ".unit" ).click(unitClick);
@@ -165,6 +176,7 @@ function mapUpdate() {
 		console.log("Flag:",unitData);
 
 		var livingEnemyUnits = 0;
+		var livingFriendlyUnits = 0;
 		
 		var unitId = 0;
 		data.Units.forEach(function(unit) {
@@ -172,13 +184,18 @@ function mapUpdate() {
 			{
 				if ($( "#unit"+unitId ).length != 0)
 				{
-					audioAttack.play();
+					playAudio(unit.deathSound);
 				}
 				$( "#unit"+unitId ).remove();
 			} else {
-				if (unit.team != selectedTeam)
+				if (selectedTeam != null)
 				{
-					livingEnemyUnits++;
+					if (unit.team != selectedTeam)
+					{
+						livingEnemyUnits++;
+					} else {
+						livingFriendlyUnits++;
+					}
 				}
 			}
 
@@ -194,15 +211,32 @@ function mapUpdate() {
 			}*/
 			//$( "#unit"+unitId ).css("height",tileSize).css("width",tileSize);
 			//$( "#unit"+unitId ).animate({left:x+"px",top:y+"px"});
+			var topDiff = $( "#unit"+unitId ).top - y;
+			var leftDiff = $( "#unit"+unitId ).left - x;
+			console.log("topDiff:",topDiff,"leftDiff",leftDiff);
+			if (topDiff > 0 || leftDiff >0)
+			{
+				playAudio(unit.moveSound);
+			}
+			
 			$( "#unit"+unitId ).animate({width:tileSize+"px",height:tileSize+"px",left:x+"px",top:y+"px"});
 			
 			unitId++;
 		});
-		if (livingEnemyUnits <= 0)
+		if (selectedTeam != null)
 		{
-			winSound.play();
-		} else {
-			console.log("Enemy units remaining:",livingEnemyUnits);
+			if (livingEnemyUnits <= 0)
+			{
+				playAudio("audio/clap.mp3");
+			} else {
+				console.log("Enemy units remaining:",livingEnemyUnits);
+			}
+			if (livingFriendlyUnits <= 0)
+			{
+				playAudio("audio/oops.mp3");
+			} else {
+				console.log("Friendly units remaining:",livingFriendlyUnits);
+			}
 		}
 		if (selectedUnitId != null) {
 			var selectedUnit = unitData.Units[selectedUnitId];
@@ -342,9 +376,10 @@ function displayAjaxReponse(result)
 			selectedUnitId = null;
 			selectorUpdate();
 		}
+	} else {
+		console.log("No Ajax Response.");
 	}
 }
-
 
 function endTurn()
 {
@@ -358,6 +393,7 @@ function attack(attackerId,defenderId)
 
 function moveUnit(unitId,x,y)
 {
+	
 	$.ajax({url:"map1/moveunit?id="+unitId+"&x="+x+"&y="+y+"",complete:displayAjaxReponse});
 }
 

@@ -20,7 +20,10 @@
 			"team": "blue",
 			"health": 50000,
 			"range":1.4,
-			"attackCost": 1500
+			"attackCost": 1500,
+			"attackSound":"audio/pewpewpew.mp3",
+			"moveSound":"audio/crunchySteps.mp3",
+			"deathSound":"audio/pop.mp3"
 		},
 		{
 			"type": "soldier",
@@ -42,7 +45,10 @@
 			"team": "red",
 			"health": 50000,
 			"range":1.4,
-			"attackCost": 1500
+			"attackCost": 1500,
+			"attackSound":"audio/pewpewpew.mp3",
+			"moveSound":"audio/crunchySteps.mp3",
+			"deathSound":"audio/pop.mp3"
 		},
 		{
 			"type": "tank",
@@ -65,7 +71,10 @@
 			"team": "blue",
 			"health": 150000,
 			"range":1.5,
-			"attackCost": 2000
+			"attackCost": 2000,
+			"attackSound":"audio/boom.mp3",
+			"moveSound":"audio/vroom.mp3",
+			"deathSound":"audio/pop.mp3"
 		},
 		{
 			"type": "tank",
@@ -88,7 +97,10 @@
 			"team": "red",
 			"health": 150000,
 			"range":1.5,
-			"attackCost": 2000
+			"attackCost": 2000,
+			"attackSound":"audio/boom.mp3",
+			"moveSound":"audio/vroom.mp3",
+			"deathSound":"audio/pop.mp3"
 		}
 	]
 }
