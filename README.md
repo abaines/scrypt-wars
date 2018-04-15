@@ -1,5 +1,15 @@
 # Scrypt Wars!
 
+## 2018 April 15
+
+![news: deaths and wins and sounds](https://github.com/abaines-vt/scrypt-wars/blob/master/news/Capture6.PNG)
+
+* Attacks new and improved with deaths (with super realistic sound!) and winning!
+* Invalid movement now clears your unit selector
+* Invalid X,Y parameters to selectorUpdate now reset the selector
+* When all enemy units are removed, your efforts are applauded!
+* Balancing: Red team now 150% better with added tank!
+
 ## 2018 April 13
 
 ![news: pick team splash screen](https://github.com/abaines-vt/scrypt-wars/blob/master/news/Capture5.PNG)
