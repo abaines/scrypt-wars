@@ -66,6 +66,29 @@
 			"health": 150000,
 			"range":1.5,
 			"attackCost": 2000
-		}	
+		},
+		{
+			"type": "tank",
+			"location": [1,1],
+			"img": "img/redTank.png",
+			"baseActionPoints": 5000,
+			"types": ["armored","mechanical"],
+			"damage": {
+				"_base": 35000,
+				"light": 5000
+			},
+			"moveMatrix":
+			{
+				"P": 1000,
+				"F": 1600,
+				"M": 2000,
+				"S": 1600,
+				"R": 500
+			},
+			"team": "red",
+			"health": 150000,
+			"range":1.5,
+			"attackCost": 2000
+		}
 	]
 }

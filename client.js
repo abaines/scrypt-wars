@@ -23,6 +23,8 @@ var teams = new Set();
 
 var selectedTeam = null;
 
+var audioAttack = new Audio('audio/pop.mp3');
+var winSound = new Audio('audio/clap.mp3');
 
 function unitClick(event) {
 	var idAttr = $(event.target).attr('id');
@@ -134,6 +136,13 @@ function mapStart() {
 }
 
 function selectorUpdate(x,y,animate) {
+	console.log("Selector update:",x,y,animate);
+	if (x === undefined || y === undefined)
+	{
+		console.log("Selector update called with undefined coordinates.");
+		$( "#selector" ).remove();
+		return;
+	}
 	var selX = xoffset+x*tileSize;
 	var selY = yoffset+y*tileSize;
 	if ($( "#selector" ).length == 0) {
@@ -155,8 +164,24 @@ function mapUpdate() {
 		unitData = data;
 		console.log("Flag:",unitData);
 
+		var livingEnemyUnits = 0;
+		
 		var unitId = 0;
 		data.Units.forEach(function(unit) {
+			if (unit.health <= 0)
+			{
+				if ($( "#unit"+unitId ).length != 0)
+				{
+					audioAttack.play();
+				}
+				$( "#unit"+unitId ).remove();
+			} else {
+				if (unit.team != selectedTeam)
+				{
+					livingEnemyUnits++;
+				}
+			}
+
 			var x = xoffset + tileSize*unit.location[0];
 			var y = yoffset + tileSize*unit.location[1];
 			
@@ -173,11 +198,23 @@ function mapUpdate() {
 			
 			unitId++;
 		});
+		if (livingEnemyUnits <= 0)
+		{
+			winSound.play();
+		} else {
+			console.log("Enemy units remaining:",livingEnemyUnits);
+		}
 		if (selectedUnitId != null) {
 			var selectedUnit = unitData.Units[selectedUnitId];
 	
 			selectorUpdate(selectedUnit.location[0],selectedUnit.location[1],true);
+			if (selectedUnit.health <=0)
+			{
+				selectedUnitId = null;
+				selectorUpdate();
+			}
 		}
+
 		updateUnitTooltip();
 		
 		defer.resolve();
@@ -300,6 +337,11 @@ function displayAjaxReponse(result)
 	if (result.responseText)
 	{
 		console.error(result.responseText);
+		if (result.responseText == "Invalid Movement")
+		{
+			selectedUnitId = null;
+			selectorUpdate();
+		}
 	}
 }
 

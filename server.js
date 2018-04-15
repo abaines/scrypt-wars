@@ -57,6 +57,16 @@ clientFileData.set('/favicon.ico',{
 	"contentType": 'image/x-icon'
 });
 
+clientFileData.set('/audio/pop.mp3',{
+	"path": "audio/pop.mp3",
+	"contentType": 'audio/mpeg'
+});
+
+clientFileData.set('/audio/clap.mp3',{
+	"path": "audio/clap.mp3",
+	"contentType": 'audio/mpeg'
+});
+
 // list of promises for each of the files we need to read from disk
 var clientFilePromises = [];
 
