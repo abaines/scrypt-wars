@@ -45,9 +45,9 @@ function unitClick(event) {
 			console.log("defender:",defender);
 			console.log("id:",id,"defenderId",defenderId,"unitData.Units[defenderId]",unitData.Units[defenderId]);
 			var attackResponse = shared.checkValidAttack(attacker,defender);
-			if (attackResponse === "Valid attack.")
+			if (attackResponse === true)
 			{
-				console.log(attackResponse);
+				console.log("Valid attack.");
 				attack(attackerId,defenderId);
 			} else
 			{

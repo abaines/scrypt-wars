@@ -258,8 +258,17 @@ function attack(query)
 		var attacker = map1units.Units[attackerId];
 		var defender = map1units.Units[defenderId];
 		
+		var validResponse = shared.checkValidAttack(attacker,defender);
+		
+		if (validResponse !== true)
+		{
+			throw validResponse;
+		}
+		
 		attacker.health -= defender.damage._base;
 		defender.health -=attacker.damage._base;
+		
+		attacker.health -= attacker.attackCost;
 		
 		console.log(attacker,attacker.damage._base,attacker.health);
 		console.log(defender,defender.damage._base,defender.health);
@@ -269,8 +278,34 @@ function attack(query)
 		console.trace(err);
 	}
 	
+	checkForWin();
+	
 	map1hash++;
 	console.log('map1hash',map1hash);
+}
+
+function checkForWin()
+{
+	const teamsAlive = new Set();
+
+	map1units.Units.forEach(function(unit) {
+		
+		console.log(unit.team,unit.health);
+		if (unit.health>0)
+		{
+			teamsAlive.add(unit.team);
+		}
+		
+	});
+	
+	console.log(teamsAlive.size,teamsAlive);
+	
+	// last team standing wins
+	if (teamsAlive.size==1)
+	{
+		map1units.winner = teamsAlive.values().next().value;
+		console.log(map1units.winner);
+	}
 }
 
 

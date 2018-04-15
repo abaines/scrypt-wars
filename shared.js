@@ -26,7 +26,18 @@
 		{
 			return "Not enough Action points.";
 		}
-		return "Valid attack.";
+		
+		if (attacker.health<0)
+		{
+			return "Attacker is dead.";
+		}
+		
+		if (defender.health<0)
+		{
+			return "Defender is dead.";
+		}
+		
+		return true;
 	};
 
 	console.log("shared.js loaded inside.");
