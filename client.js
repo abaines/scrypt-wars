@@ -24,11 +24,15 @@ var teams = new Set();
 var selectedTeam = null;
 
 var sound = null;
+var soundEnable = true;
 
 function playAudio(file)
 {
 	sound = new Audio(file);
-	sound.play();
+	if (soundEnable)
+	{
+		sound.play();
+	}
 }
 
 function unitClick(event) {
@@ -171,7 +175,7 @@ function mapUpdate() {
 	var defer = $.Deferred();
 
 	$.getJSON( "map1/units", function( data ) {
-	
+		var oldUnitData = unitData;
 		unitData = data;
 		console.log("Flag:",unitData);
 
@@ -198,7 +202,11 @@ function mapUpdate() {
 					}
 				}
 			}
-
+			var oldUnit = oldUnitData.Units[unitId];
+			
+			var xDiff = oldUnit.location[0] - unit.location[0];
+			var yDiff = oldUnit.location[1] - unit.location[1];
+						
 			var x = xoffset + tileSize*unit.location[0];
 			var y = yoffset + tileSize*unit.location[1];
 			
@@ -211,10 +219,9 @@ function mapUpdate() {
 			}*/
 			//$( "#unit"+unitId ).css("height",tileSize).css("width",tileSize);
 			//$( "#unit"+unitId ).animate({left:x+"px",top:y+"px"});
-			var topDiff = $( "#unit"+unitId ).top - y;
-			var leftDiff = $( "#unit"+unitId ).left - x;
-			console.log("topDiff:",topDiff,"leftDiff",leftDiff);
-			if (topDiff > 0 || leftDiff >0)
+
+			console.log("xDiff:",xDiff,"yDiff",yDiff);
+			if (xDiff != 0 || yDiff != 0)
 			{
 				playAudio(unit.moveSound);
 			}
@@ -334,6 +341,17 @@ $.getJSON( "map1/terrain", function( data ) {
 
 $( "#endTurn" ).click(endTurn);
 
+function soundToggle()
+{
+	soundEnable = !soundEnable;
+	if (soundEnable)
+	{
+		$("#soundToggle").html('Sound: on');
+	} else {
+		$("#soundToggle").html('Sound: off');
+	}
+}
+$( "#soundToggle" ).click(soundToggle);
 
 
 //code to shrink and grow map

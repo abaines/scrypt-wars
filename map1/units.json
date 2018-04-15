@@ -22,7 +22,7 @@
 			"range":1.4,
 			"attackCost": 1500,
 			"attackSound":"audio/pewpewpew.mp3",
-			"moveSound":"audio/crunchySteps.mp3",
+			"moveSound":"audio/footsteps.mp3",
 			"deathSound":"audio/pop.mp3"
 		},
 		{
@@ -47,7 +47,7 @@
 			"range":1.4,
 			"attackCost": 1500,
 			"attackSound":"audio/pewpewpew.mp3",
-			"moveSound":"audio/crunchySteps.mp3",
+			"moveSound":"audio/footsteps.mp3",
 			"deathSound":"audio/pop.mp3"
 		},
 		{
