@@ -56,17 +56,7 @@ clientFileData.set('/favicon.ico',{
 	"path": "favicon.ico",
 	"contentType": 'image/x-icon'
 });
-/*
-clientFileData.set('/audio/pop.mp3',{
-	"path": "audio/pop.mp3",
-	"contentType": 'audio/mpeg'
-});
 
-clientFileData.set('/audio/clap.mp3',{
-	"path": "audio/clap.mp3",
-	"contentType": 'audio/mpeg'
-});
-*/
 // list of promises for each of the files we need to read from disk
 var clientFilePromises = [];
 
@@ -89,85 +79,65 @@ clientFileData.forEach(function(value, key, map)
 });
 
 
-// collect all of the .png files from the `img` folder and make them available to clients
-// Added MP3 collection from 'audio' dir.
-new Promise(function(resolve, reject) {
-
-	fs.readdir("img", (err, files) => {
-		files.forEach(file => {
-			if (file.endsWith(".png"))
-			{
-				var p = new Promise(function(resolve, reject)
-				{
-					var filePath = 'img/'+file;
-					fs.readFile(filePath, function(err, data) {
-
-						var url = '/' + filePath;
-						clientFileData.set(url,{
-							"data": data,
-							"contentType": 'image',
-							"path": filePath
-						});
-
-						resolve();
-					});   
-				});
-				
-				clientFilePromises.push(p);
-			}
-			else
-			{
-				console.log("img!",file);
-			}
-		});
-		resolve(files.length);
-	});
+// example directory: "img"
+// example extensions: ".png"
+// example contentType: "image"
+function LoadFolder(directory, extension, contentType)
+{
+	var folderPromises = [];
+	return new Promise(function(resolve, reject) {
 	
-	fs.readdir("audio", (err, files) => {
-		files.forEach(file => {
-			if (file.endsWith(".mp3"))
-			{
-				console.log('mp3 found');
-				var q = new Promise(function(resolve, reject)
+		fs.readdir(directory, (err, files) => {
+			files.forEach(file => {
+				if (file.endsWith(extension))
 				{
-					var filePath = 'audio/'+file;
-					fs.readFile(filePath, function(err, data) {
+					var p = new Promise(function(resolve, reject)
+					{
+						var filePath = directory+'/'+file;
+						fs.readFile(filePath, function(err, data) {
 
-						var url = '/' + filePath;
-						clientFileData.set(url,{
-							"data": data,
-							"contentType": 'audio',
-							"path": filePath
-						});
+							var url = '/' + filePath;
+							clientFileData.set(url,{
+								"data": data,
+								"contentType": contentType,
+								"path": filePath
+							});
 
-						resolve();
-					});   
-				});
+							resolve();
+						});   
+					});
 				
-				clientFilePromises.push(q);
-			}
-			else
-			{
-				console.log("audio!",file);
-			}
+					folderPromises.push(p);
+				}
+				else
+				{
+					console.error(extension,file);
+					reject();
+				}
+			});
+			
+			
+			Promise.all(folderPromises).then(function(values) {
+				resolve(files.length);
+			});
 		});
-		resolve(files.length);
 	});
+}
 
-}).then(function(value) {
-	console.log('readdir complete',value);
-	
-	Promise.all(clientFilePromises).then(function(values) {
-		// all of the client files have been read into cache
-		console.log("client files cached");
-		clientFileData.forEach(function(value, key, map)
-		{
-			console.log('\t',value.path,key,value.contentType,value.data.length);
-		});
+
+clientFilePromises.push(LoadFolder("img", ".png", "image"));
+clientFilePromises.push(LoadFolder("audio", ".mp3", "audio"));
+
+
+
+Promise.all(clientFilePromises).then(function(values) {
+	// all of the client files have been read into cache
+	console.log("client files cached");
+	clientFileData.forEach(function(value, key, map)
+	{
+		console.log('\t',value.path,key,value.contentType,value.data.length);
 	});
 });
-
-
 
 
 
