@@ -311,12 +311,14 @@ function microAttacks(attacker,defender)
 		if ( attackerExpected <= 0 && defenderExpected<=0 )
 		{
 			console.log("final micros",attackerExpected,defenderExpected);
+			console.log("total micros",attackerMicros,defenderMicros);
 			return;
 		}
 		
 		if (attacker.health<=0 || defender.health<=0)
 		{
 			console.log("deadunit",attacker.health,defender.health);
+			return;
 		}
 		
 		if ( selectMicro(attackerExpected,defenderExpected) )
