@@ -303,6 +303,8 @@ function microAttacks(attacker,defender)
 	var attackerMicros = 0;
 	var defenderMicros = 0;
 	
+	var history = "";
+	
 	while (true)
 	{
 		var attackerExpected = expectedMicroAttacks(attacker) - attackerMicros;
@@ -312,32 +314,50 @@ function microAttacks(attacker,defender)
 		{
 			console.log("final micros",attackerExpected,defenderExpected);
 			console.log("total micros",attackerMicros,defenderMicros);
-			return;
+			break;
 		}
 		
 		if (attacker.health<=0 || defender.health<=0)
 		{
 			console.log("deadunit",attacker.health,defender.health);
-			return;
+			break;
 		}
 		
 		if ( selectMicro(attackerExpected,defenderExpected) )
 		{
-			defender.health -= randomInt(1);
+			var hit = randomInt(1);
+			defender.health -= hit;
+			if (hit==0)
+			{
+				history += "a";
+			}
+			else
+			{
+				history += "A";
+			}
 			attackerMicros++;
 		}
 		else
 		{
-			attacker.health -= randomInt(1);
+			var hit = randomInt(1);
+			attacker.health -= hit;
+			if (hit==0)
+			{
+				history += "d";
+			}
+			else
+			{
+				history += "D";
+			}
 			defenderMicros++;
 		}
-		
 	}
+	console.log(history);
 }
 
 function selectMicro(atk,def)
 {
-	var sum = atk*2 + def;
+	var sum = atk*10 + def;
 	var r = randomInt(sum);
 	return r > def;
 }
