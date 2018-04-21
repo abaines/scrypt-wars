@@ -17,7 +17,7 @@ server.listen(1337, '127.0.0.1');
 */
 
 
-var useCache = false;
+var useCache = true;
 
 
 // files to make available to clients
@@ -277,10 +277,12 @@ function attack(query)
 			throw validResponse;
 		}
 		
-		attacker.health -= defender.damage._base;
-		defender.health -=attacker.damage._base;
+		microAttacks(attacker,defender);
 		
-		attacker.health -= attacker.attackCost;
+		//attacker.health -= defender.damage._base;
+		//defender.health -=attacker.damage._base;
+		
+		//attacker.health -= attacker.attackCost;
 		
 		console.log(attacker,attacker.damage._base,attacker.health);
 		console.log(defender,defender.damage._base,defender.health);
@@ -294,6 +296,56 @@ function attack(query)
 	
 	map1hash++;
 	console.log('map1hash',map1hash);
+}
+
+function microAttacks(attacker,defender)
+{
+	var attackerMicros = 0;
+	var defenderMicros = 0;
+	
+	while (true)
+	{
+		var attackerExpected = expectedMicroAttacks(attacker) - attackerMicros;
+		var defenderExpected = expectedMicroAttacks(defender) - defenderMicros;
+		
+		if ( attackerExpected <= 0 && defenderExpected<=0 )
+		{
+			console.log("final micros",attackerExpected,defenderExpected);
+			return;
+		}
+		
+		if (attacker.health<=0 || defender.health<=0)
+		{
+			console.log("deadunit",attacker.health,defender.health);
+		}
+		
+		if ( selectMicro(attackerExpected,defenderExpected) )
+		{
+			defender.health -= randomInt(1);
+			attackerMicros++;
+		}
+		else
+		{
+			attacker.health -= randomInt(1);
+			defenderMicros++;
+		}
+		
+	}
+}
+
+function selectMicro(atk,def)
+{
+	var sum = atk*2 + def;
+	var r = randomInt(sum);
+	return r > def;
+}
+
+function expectedMicroAttacks(unit)
+{
+	var perc = Math.min(unit.health / unit.baseHealth,1.0);
+	
+	
+	return unit.damage._base *( perc/2 + 0.5);
 }
 
 function checkForWin()
@@ -416,6 +468,84 @@ function dothething(request, response) {
 http.createServer(dothething).listen(8080);
 
 console.log(shared.xkcdRandom());
+
+
+// 0 to i inclusive
+function randomInt(i)
+{
+	return Math.floor(Math.random() * (i + 1));
+}
+
+function pennyRandom(count)
+{
+	var d = new Map();
+	d.set(0,0);
+	d.set(1,0);
+	
+	for (var i = 0; i < count; i++)
+	{ 
+		//var n = Math.floor(Math.random() * 2);
+		var n = randomInt(1);
+	
+		d.set(n,d.get(n)+1);
+	}
+	
+	var zero = d.get(0);
+	var one = d.get(1);	
+	
+	return d;
+}
+
+function randomPlayground(pennies,times)
+{
+	var d = new Map();
+
+	for (var i = 0; i < times; i++)
+	{ 
+		var p = pennyRandom(pennies).get(0);
+		
+		if (!d.has(p))
+		{
+			d.set(p,0);
+		}
+		
+		d.set(p,d.get(p)+1);
+	}
+	
+	var a = Array.from(d.keys());
+	a.sort();
+	//console.log(a);
+	
+	a.forEach(function(value)
+	{
+		console.log(value,d.get(value));
+	});
+}
+
+/*
+var ma = 0;
+
+for (var i = 0; i < 100000; i++)
+{ 
+	var m = randomPlayground();
+	ma = Math.max(m,ma);
+
+
+console.log(ma);
+*/
+
+/*
+randomPlayground(10,   10000);
+randomPlayground(100,  10000);
+randomPlayground(1000, 10000);
+randomPlayground(10000,10000);
+//*/
+
+	setTimeout(function()
+	{
+		microAttacks(map1units.Units[0],map1units.Units[1]);
+		console.log("micro test", map1units.Units[0].health,map1units.Units[1].health);
+	}, 2000);
 
 console.log("end of hello.js");
 
