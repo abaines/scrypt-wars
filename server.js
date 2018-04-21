@@ -351,8 +351,23 @@ function microAttacks(attacker,defender)
 			}
 			defenderMicros++;
 		}
+		
+		if ((attackerMicros+defenderMicros)%50==0)
+		{
+			console.log(history, attackerMicros,defenderMicros,attacker.health,defender.health,Math.round(attackerExpected), Math.round(defenderExpected),
+			charCount(history,'A'), charCount(history,'a'), charCount(history,'D'), charCount(history,'d'),  charCount(history.toLowerCase(),'a'), charCount(history.toLowerCase(),'d'));
+			history = "";
+		}
 	}
-	console.log(history);
+	//console.log(history);
+}
+
+function charCount(str,char)
+{
+	var stringsearch = char;
+	var count;
+	for(var i=count=0; i<str.length; count+=+(stringsearch===str[i++]));
+	return count;
 }
 
 function selectMicro(atk,def)
@@ -566,7 +581,7 @@ randomPlayground(10000,10000);
 	setTimeout(function()
 	{
 		microAttacks(map1units.Units[0],map1units.Units[1]);
-		console.log("micro test", map1units.Units[0].health,map1units.Units[1].health);
+		console.log("micro test", map1units.Units[0].health,map1units.Units[1].health, map1units.Units[0].health-map1units.Units[1].health);
 	}, 2000);
 
 console.log("end of hello.js");
