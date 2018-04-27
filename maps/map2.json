@@ -1,0 +1,130 @@
+{
+	"Dynamic":{
+		"Units":[
+			{
+				"type": "soldier",
+				"location": [2,6],
+				"img": "img/blueSoldier.png",
+				"baseActionPoints": 3000,
+				"types": ["light","bio"],
+				"moveMatrix":
+				{
+					"P": 1000,
+					"F": 1500,
+					"M": 2000,
+					"S": 1500,
+					"R": 1000
+				},
+				"damage": {
+					"_base": 45000
+				},
+				"team": "blue",
+				"health": 50000,
+				"baseHealth": 50000,
+				"range":1.4,
+				"attackCost": 1500,
+				"attackSound":"audio/pewpewpew.mp3",
+				"moveSound":"audio/footsteps.mp3",
+				"deathSound":"audio/pop.mp3"
+			},
+			{
+				"type": "soldier",
+				"location": [14,6],
+				"img": "img/redSoldier.png",
+				"baseActionPoints": 3000,
+				"types": ["light","bio"],
+				"moveMatrix":
+				{
+					"P": 1000,
+					"F": 1500,
+					"M": 2000,
+					"S": 1500,
+					"R": 1000
+				},
+				"damage": {
+					"_base": 45000
+				},
+				"team": "red",
+				"health": 50000,
+				"baseHealth": 50000,
+				"range":1.4,
+				"attackCost": 1500,
+				"attackSound":"audio/pewpewpew.mp3",
+				"moveSound":"audio/footsteps.mp3",
+				"deathSound":"audio/pop.mp3"
+			},
+			{
+				"type": "tank",
+				"location": [1,9],
+				"img": "img/blueTank.png",
+				"baseActionPoints": 5000,
+				"types": ["armored","mechanical"],
+				"damage": {
+					"_base": 35000,
+					"light": 5000
+				},
+				"moveMatrix":
+				{
+					"P": 1000,
+					"F": 1600,
+					"M": 2000,
+					"S": 1600,
+					"R": 500
+				},
+				"team": "blue",
+				"health": 150000,
+				"baseHealth": 150000,
+				"range":1.5,
+				"attackCost": 2000,
+				"attackSound":"audio/boom.mp3",
+				"moveSound":"audio/vroom.mp3",
+				"deathSound":"audio/pop.mp3"
+			},
+			{
+				"type": "tank",
+				"location": [15,3],
+				"img": "img/redTank.png",
+				"baseActionPoints": 5000,
+				"types": ["armored","mechanical"],
+				"damage": {
+					"_base": 35000,
+					"light": 5000
+				},
+				"moveMatrix":
+				{
+					"P": 1000,
+					"F": 1600,
+					"M": 2000,
+					"S": 1600,
+					"R": 500
+				},
+				"team": "red",
+				"health": 150000,
+				"baseHealth": 150000,
+				"range":1.5,
+				"attackCost": 2000,
+				"attackSound":"audio/boom.mp3",
+				"moveSound":"audio/vroom.mp3",
+				"deathSound":"audio/pop.mp3"
+			}
+		]
+	},
+	"Static":{
+		"Map": [
+			["W", "S", "S", "S", "W", "S", "S", "M", "W", "S", "M", "S", "S", "S", "S", "S", "W"],
+			["W", "S", "S", "S", "W", "S", "S", "M", "W", "W", "M", "F", "F", "S", "S", "S", "W"],
+			["W", "S", "W", "S", "W", "S", "S", "M", "S", "S", "M", "F", "F", "F", "W", "S", "W"],
+			["W", "S", "W", "S", "S", "S", "S", "M", "S", "S", "M", "F", "F", "F", "W", "S", "W"],
+			["W", "R", "W", "S", "S", "S", "S", "M", "S", "S", "M", "F", "F", "F", "W", "R", "W"],
+			["W", "R", "W", "S", "R", "R", "R", "R", "R", "R", "R", "R", "S", "S", "W", "R", "W"],
+			["W", "R", "R", "R", "R", "S", "S", "M", "S", "S", "M", "R", "R", "R", "R", "R", "W"],
+			["W", "R", "W", "S", "F", "S", "S", "M", "S", "S", "M", "S", "S", "S", "W", "R", "W"],
+			["W", "R", "W", "F", "F", "F", "S", "M", "S", "S", "M", "S", "S", "S", "W", "R", "W"],
+			["W", "S", "W", "F", "F", "F", "S", "M", "S", "S", "M", "M", "S", "S", "W", "S", "W"],
+			["W", "S", "W", "F", "F", "F", "S", "M", "S", "S", "M", "S", "S", "S", "W", "S", "W"],
+			["W", "S", "S", "F", "F", "F", "S", "M", "S", "S", "M", "S", "S", "S", "S", "S", "W"],
+			["W", "S", "S", "F", "S", "F", "S", "M", "W", "W", "M", "S", "S", "S", "S", "S", "W"],
+			["W", "S", "S", "S", "S", "S", "S", "M", "S", "W", "M", "S", "S", "S", "S", "S", "W"]
+		]
+	}
+}
