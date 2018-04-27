@@ -1,5 +1,11 @@
 # Scrypt Wars!
 
+## 2018 April 26
+
+* Server side map switching
+* Maps are single `.json` file now
+* Start of client side map selecting
+
 ## 2018 April 15
 
 ![news: deaths and wins and sounds](https://github.com/abaines-vt/scrypt-wars/blob/master/news/Capture6.PNG)
