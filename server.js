@@ -143,15 +143,15 @@ Promise.all(clientFilePromises).then(function(values) {
 
 
 
-var map1hash = 1;
+var maphash = 1;
 
-var map1units;
+var mapunits;
 
 fs.readFile('map1/units.json', function(err, data) {
 	console.log('map1/units.json');
 	var obj = JSON.parse(data);
 	console.log(obj);
-	map1units = obj;
+	mapunits = obj;
 	
 	setTimeout(function()
 	{
@@ -167,15 +167,16 @@ fs.readFile('map1/units.json', function(err, data) {
 // R Roads
 // S Swamp
 
-var map1terrain;
+var mapterrain;
 
 fs.readFile('map1/terrain.json', function(err, data) {
 	console.log('map1/terrain.json');
-	map1terrain = JSON.parse(data);
+	mapterrain = JSON.parse(data);
 	
 	// display map 1
-	var r = 0;
-	map1terrain.Map.forEach(function(row)
+	var
+	 r = 0;
+	mapterrain.Map.forEach(function(row)
 	{
 		var c = 0;
 		var sb = "";
@@ -243,7 +244,7 @@ function endTurn(query)
 {
 	console.log('endTurn',query);
 	
-	map1units.Units.forEach(function(unit)
+	mapunits.Units.forEach(function(unit)
 	{
 		unit.actionPoints = (unit.actionPoints||0) + unit.baseActionPoints;
 		
@@ -254,8 +255,8 @@ function endTurn(query)
 		
 	});
 	
-	map1hash++;
-	console.log('map1hash',map1hash);
+	maphash++;
+	console.log('maphash',maphash);
 }
 
 
@@ -461,36 +462,36 @@ function dothething(request, response) {
 	}
 
 	switch(qpn) {
-		case "/map1/terrain":
+		case "/terrain":
 			response.writeHead(200, {'Content-Type': 'application/json'});
-			response.write(JSON.stringify(map1terrain));
+			response.write(JSON.stringify(mapterrain));
 			response.endLog();
 			break;
 
-		case "/map1/units":
+		case "/units":
 			response.writeHead(200, {'Content-Type': 'application/json'});
-			response.write(JSON.stringify(map1units));
+			response.write(JSON.stringify(mapunits));
 			response.endLog();
 			break;
 			
-		case "/map1/moveunit":
+		case "/moveunit":
 			moveunit(q.query,response);
 			response.endLog();
 			break;
 			
-		case "/map1/endturn":
+		case "/endturn":
 			endTurn(q.query);
 			response.endLog();
 			break;
 			
-		case "/map1/attack":
+		case "/attack":
 			attack(q.query);
 			response.endLog();
 			break;
 			
-		case "/map1/hash":
+		case "/hash":
 			response.writeHead(200, {'Content-Type': 'application/json'});
-			response.write(JSON.stringify(map1hash));
+			response.write(JSON.stringify(maphash));
 			response.endLog();
 			break;
 
@@ -580,15 +581,15 @@ randomPlayground(10000,10000);
 
 	setTimeout(function()
 	{
-		microAttacks(map1units.Units[0],map1units.Units[1]);
-		console.log("micro test", map1units.Units[0].health,map1units.Units[1].health, map1units.Units[0].health-map1units.Units[1].health);
+		microAttacks(mapunits.Units[0],mapunits.Units[1]);
+		console.log("micro test", mapunits.Units[0].health,mapunits.Units[1].health, mapunits.Units[0].health-mapunits.Units[1].health);
 		
-		microAttacks(map1units.Units[1],map1units.Units[0]);
-		console.log("micro test", map1units.Units[0].health,map1units.Units[1].health, map1units.Units[0].health-map1units.Units[1].health);
+		microAttacks(mapunits.Units[1],mapunits.Units[0]);
+		console.log("micro test", mapunits.Units[0].health,mapunits.Units[1].health, mapunits.Units[0].health-mapunits.Units[1].health);
 		
 		var ts = 0;
 		var fs = 0;
-		for (var i = 0; i < 1000; i++)
+		for (var i = 0; i < 1100; i++)
 		{
 			if (selectMicro(15000,15000))
 			{
