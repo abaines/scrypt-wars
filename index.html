@@ -11,7 +11,7 @@
 
 
 
-<!-- The Modal -->
+<!-- Pick Team Modal -->
 <div id="pickTeamModal" class="modal">
 
   <!-- Modal content -->
@@ -25,6 +25,19 @@
 
 </div>
 
+<!-- Map Select Modal -->
+<div id="mapSelectModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content" style="display: none;">
+    <div class="modal-body">
+    	<h1>Welcome to Scrypt-Wars !</h1>
+      <p>Pick a map!</p>
+      <span id="pickTeam"> </span>
+    </div>
+  </div>
+
+</div>
 
 
 <!--
@@ -47,6 +60,7 @@
 <span id="selectedUnitActionPoints">*Action Points: unknown</span>
 <button type="button" id="endTurn">End Turn</button>
 <button type="button" id="soundToggle">Sound: on</button>
+<button type="button" id="mapSelect">Map Select</button>
 
 <script src="/jquery.js"></script>
 <script src="/shared.js"></script>

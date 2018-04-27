@@ -97,6 +97,11 @@ function pickTeam(event)
 	
 }
 
+function mapSelect() {
+	$( "#mapSelectModal" ).show();
+}
+//$.ajax({url:"loadmap?name="+name,complete:displayAjaxReponse});
+
 function mapStart() {
 
 	var defer = $.Deferred();
@@ -292,7 +297,7 @@ function tileClick(event) {
 		moveUnit(selectedUnitId,x,y);
 	}
 }
-	
+
 $.getJSON( "terrain", function( data ) {
 	terrainData = data;
 	console.log(terrainData);
@@ -340,6 +345,7 @@ $.getJSON( "terrain", function( data ) {
 
 
 $( "#endTurn" ).click(endTurn);
+$( "#mapSelect" ).click(mapSelect);
 
 function soundToggle()
 {
