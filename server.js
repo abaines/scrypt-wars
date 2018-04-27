@@ -185,19 +185,7 @@ function loadMapData(path)
 
 loadMapData("maps/map1.json");
 
-/*
-fs.readFile('map1/units.json', function(err, data) {
-	console.log('map1/units.json');
-	var obj = JSON.parse(data);
-	console.log(obj);
-	mapunits = obj;
-	
-	setTimeout(function()
-	{
-		endTurn();
-	}, 1000);
-});
-*/
+
 
 // Map legend:
 // P Plains
@@ -208,33 +196,13 @@ fs.readFile('map1/units.json', function(err, data) {
 // S Swamp
 
 
-/*
-fs.readFile('map1/terrain.json', function(err, data) {
-	console.log('map1/terrain.json');
-	mapterrain = JSON.parse(data);
-	
-	// display map 1
-	var
-	 r = 0;
-	mapterrain.Map.forEach(function(row)
-	{
-		var c = 0;
-		var sb = "";
-		row.forEach(function(el)
-		{
-			sb += el;
-		});
-		console.log(sb);
-	});
-	
-});
-*/
+
 
 
 function moveunit(query,response)
 {
 	console.log(query);
-	console.log(map1units);
+	console.log(mapunits);
 	
 	try
 	{
@@ -244,22 +212,22 @@ function moveunit(query,response)
 		var y = parseInt(query.y);
 		
 		
-		if (Math.abs(map1units.Units[id].location[0] - x)>1 || Math.abs(map1units.Units[id].location[1] - y)>1)
+		if (Math.abs(mapunits.Units[id].location[0] - x)>1 || Math.abs(mapunits.Units[id].location[1] - y)>1)
 		{
 			var err = "Invalid Movement";
 			response.write(err);
 			throw err;
 		}
 		
-		var moveTile = map1terrain.Map[y][x];
+		var moveTile = mapterrain.Map[y][x];
 		console.log('moveTile',moveTile);
 		
-		var mmm = map1units.Units[id].moveMatrix[moveTile] || Infinity;
+		var mmm = mapunits.Units[id].moveMatrix[moveTile] || Infinity;
 		console.log('mmm',mmm);
 		
-		var cost = Math.hypot(map1units.Units[id].location[0] - x,map1units.Units[id].location[1] - y)*mmm;
+		var cost = Math.hypot(mapunits.Units[id].location[0] - x,mapunits.Units[id].location[1] - y)*mmm;
 		
-		if ((map1units.Units[id].actionPoints||0) < cost)
+		if ((mapunits.Units[id].actionPoints||0) < cost)
 		{
 			var err = "Not Enough Action Points";
 			response.write(err);
@@ -269,16 +237,16 @@ function moveunit(query,response)
 
 		var location = [x,y];
 
-		map1units.Units[id].location = location;
-		map1units.Units[id].actionPoints -= cost;
+		mapunits.Units[id].location = location;
+		mapunits.Units[id].actionPoints -= cost;
 	}
 	catch(err)
 	{
 		console.trace(err);
 	}
 	
-	map1hash++;
-	console.log('map1hash',map1hash);
+	maphash++;
+	console.log('map1hash',maphash);
 }
 
 function endTurn(query)
@@ -336,8 +304,8 @@ function attack(query)
 	
 	checkForWin();
 	
-	map1hash++;
-	console.log('map1hash',map1hash);
+	maphash++;
+	console.log('maphash',maphash);
 }
 
 function microAttacks(attacker,defender)
@@ -431,7 +399,7 @@ function checkForWin()
 {
 	const teamsAlive = new Set();
 
-	map1units.Units.forEach(function(unit) {
+	mapunits.Units.forEach(function(unit) {
 		
 		console.log(unit.team,unit.health);
 		if (unit.health>0)
@@ -446,8 +414,8 @@ function checkForWin()
 	// last team standing wins
 	if (teamsAlive.size==1)
 	{
-		map1units.winner = teamsAlive.values().next().value;
-		console.log(map1units.winner);
+		mapunits.winner = teamsAlive.values().next().value;
+		console.log(mapunits.winner);
 	}
 }
 
@@ -476,7 +444,7 @@ function dothething(request, response) {
 		}
 	};
 	
-	if (qpn!="/map1/hash")
+	if (qpn!="/hash")
 	{
 		console.log(q.pathname,request.connection.remoteAddress);
 	}

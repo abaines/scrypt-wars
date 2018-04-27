@@ -107,7 +107,7 @@ function mapStart() {
 	//ensure the Map tile size displays correctly when a nonstandard size (<>24) is set as start value.
 	$("#mapSize").text("Map tile size: " + tileScale + "("+tileSize+")");
 
-	$.getJSON( "map1/units", function( data ) {
+	$.getJSON( "units", function( data ) {
 	
 		unitData = data;
 		console.log(unitData);
@@ -174,7 +174,7 @@ function selectorUpdate(x,y,animate) {
 function mapUpdate() {
 	var defer = $.Deferred();
 
-	$.getJSON( "map1/units", function( data ) {
+	$.getJSON( "units", function( data ) {
 		var oldUnitData = unitData;
 		unitData = data;
 		console.log("Flag:",unitData);
@@ -293,7 +293,7 @@ function tileClick(event) {
 	}
 }
 	
-$.getJSON( "map1/terrain", function( data ) {
+$.getJSON( "terrain", function( data ) {
 	terrainData = data;
 	console.log(terrainData);
 
@@ -401,23 +401,23 @@ function displayAjaxReponse(result)
 
 function endTurn()
 {
-	$.ajax({url:"map1/endturn?team=0",complete:displayAjaxReponse});
+	$.ajax({url:"endturn?team=0",complete:displayAjaxReponse});
 }
 
 function attack(attackerId,defenderId)
 {
-	$.ajax({url:"map1/attack?attacker="+attackerId+"&defender="+defenderId,complete:displayAjaxReponse});
+	$.ajax({url:"attack?attacker="+attackerId+"&defender="+defenderId,complete:displayAjaxReponse});
 }
 
 function moveUnit(unitId,x,y)
 {
 	
-	$.ajax({url:"map1/moveunit?id="+unitId+"&x="+x+"&y="+y+"",complete:displayAjaxReponse});
+	$.ajax({url:"moveunit?id="+unitId+"&x="+x+"&y="+y+"",complete:displayAjaxReponse});
 }
 
 
 function checkHash() {
-	$.getJSON( "map1/hash", function( data ) {
+	$.getJSON( "hash", function( data ) {
 	
 		$("#lastHash").text("*Hash: " + data);
 			
