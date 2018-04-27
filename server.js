@@ -142,12 +142,71 @@ Promise.all(clientFilePromises).then(function(values) {
 
 
 
+var mapSet = new Set();
+
+var loadMapListPromise = new Promise(function(resolve,reject)
+{
+	
+	
+	
+	fs.readdir("maps", (err, files) => 
+	{
+		files.forEach(file => 
+		{
+			if (file.endsWith(".json"))
+			{
+				console.log("mapname",file);
+				mapSet.add(file);
+			}
+		});
+		
+		console.log(mapSet);
+		
+		resolve(mapSet.length);
+	});
+	
+	
+	
+});
+
+
+
+
+
+
 
 var maphash = 1;
 
 var mapunits;
 
 var mapterrain;
+
+
+function clientLoadMap(query)
+{
+	var name = query.name;
+	
+	var isValidMapName = shared.isAlphaNumeric(name);
+	
+	console.log(name,isValidMapName);
+	
+	if (!isValidMapName)
+	{
+		console.log("invalid load map request",name);
+	}
+	else if (mapSet.has(name+".json"))
+	{
+		var mappath = "maps/"+name+".json";
+		console.log("we have it!",mappath);
+		
+		loadMapData(mappath);
+		
+	}
+	else
+	{
+		console.log("Can't find map to load",name);
+	}
+}
 
 
 function loadMapData(path)
@@ -504,6 +563,11 @@ function dothething(request, response) {
 		case "/hash":
 			response.writeHead(200, {'Content-Type': 'application/json'});
 			response.write(JSON.stringify(maphash));
+			response.endLog();
+			break;
+			
+		case "/loadmap":
+			clientLoadMap(q.query);
 			response.endLog();
 			break;
 
