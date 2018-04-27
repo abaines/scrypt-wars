@@ -174,7 +174,7 @@ function loadMapData(path)
 				console.log(sb);
 			});
 			
-			maphash++;
+			endTurn();
 			
 			resolve();
 
@@ -277,8 +277,8 @@ function attack(query)
 		var defenderId = parseInt(query.defender);
 		console.log(query,attackerId, defenderId);
 		
-		var attacker = map1units.Units[attackerId];
-		var defender = map1units.Units[defenderId];
+		var attacker = mapunits.Units[attackerId];
+		var defender = mapunits.Units[defenderId];
 		
 		var validResponse = shared.checkValidAttack(attacker,defender);
 		
@@ -364,8 +364,11 @@ function microAttacks(attacker,defender)
 		
 		if ((attackerMicros+defenderMicros)%50==0)
 		{
-			console.log(history, attackerMicros,defenderMicros,attacker.health,defender.health,Math.round(attackerExpected), Math.round(defenderExpected),
-			charCount(history,'A'), charCount(history,'a'), charCount(history,'D'), charCount(history,'d'),  charCount(history.toLowerCase(),'a'), charCount(history.toLowerCase(),'d'));
+			if (false)
+			{
+				console.log(history, attackerMicros,defenderMicros,attacker.health,defender.health,Math.round(attackerExpected), Math.round(defenderExpected),
+				charCount(history,'A'), charCount(history,'a'), charCount(history,'D'), charCount(history,'d'),  charCount(history.toLowerCase(),'a'), charCount(history.toLowerCase(),'d'));
+			}
 			history = "";
 		}
 	}
