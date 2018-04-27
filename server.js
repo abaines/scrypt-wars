@@ -147,6 +147,45 @@ var maphash = 1;
 
 var mapunits;
 
+var mapterrain;
+
+
+function loadMapData(path)
+{
+	return new Promise(function(resolve, reject) {
+		fs.readFile(path, function(err, data)
+		{
+			console.log(path);
+			var obj = JSON.parse(data);
+
+			mapunits = obj.Dynamic;
+	
+			mapterrain = obj.Static;
+
+			// display map
+			mapterrain.Map.forEach(function(row)
+			{
+				var c = 0;
+				var sb = "";
+				row.forEach(function(el)
+				{
+					sb += el;
+				});
+				console.log(sb);
+			});
+			
+			maphash++;
+			
+			resolve();
+
+		});
+	});
+}
+
+
+loadMapData("maps/map1.json");
+
+/*
 fs.readFile('map1/units.json', function(err, data) {
 	console.log('map1/units.json');
 	var obj = JSON.parse(data);
@@ -158,6 +197,7 @@ fs.readFile('map1/units.json', function(err, data) {
 		endTurn();
 	}, 1000);
 });
+*/
 
 // Map legend:
 // P Plains
@@ -167,8 +207,8 @@ fs.readFile('map1/units.json', function(err, data) {
 // R Roads
 // S Swamp
 
-var mapterrain;
 
+/*
 fs.readFile('map1/terrain.json', function(err, data) {
 	console.log('map1/terrain.json');
 	mapterrain = JSON.parse(data);
@@ -188,6 +228,7 @@ fs.readFile('map1/terrain.json', function(err, data) {
 	});
 	
 });
+*/
 
 
 function moveunit(query,response)
