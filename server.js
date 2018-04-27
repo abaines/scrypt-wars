@@ -582,6 +582,25 @@ randomPlayground(10000,10000);
 	{
 		microAttacks(map1units.Units[0],map1units.Units[1]);
 		console.log("micro test", map1units.Units[0].health,map1units.Units[1].health, map1units.Units[0].health-map1units.Units[1].health);
+		
+		microAttacks(map1units.Units[1],map1units.Units[0]);
+		console.log("micro test", map1units.Units[0].health,map1units.Units[1].health, map1units.Units[0].health-map1units.Units[1].health);
+		
+		var ts = 0;
+		var fs = 0;
+		for (var i = 0; i < 1000; i++)
+		{
+			if (selectMicro(15000,15000))
+			{
+			ts++;
+			}
+			else
+			{
+			fs++;
+			}
+		}
+		console.log(ts,fs);
+		
 	}, 2000);
 
 console.log("end of hello.js");

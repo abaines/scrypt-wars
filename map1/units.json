@@ -15,7 +15,7 @@
 				"R": 1000
 			},
 			"damage": {
-				"_base": 15000
+				"_base": 45000
 			},
 			"team": "blue",
 			"health": 50000,
@@ -41,7 +41,7 @@
 				"R": 1000
 			},
 			"damage": {
-				"_base": 15000
+				"_base": 45000
 			},
 			"team": "red",
 			"health": 50000,
